@@ -1,0 +1,14 @@
+[project]
+name = "comfyui-open-ad-factory"
+description = "Paste a product URL, get a vertical video ad that grades itself. Open-weights only: Gemma 4 plans and judges, Qwen-Image 2.1 makes keyframes, LTX-2.3 animates with voice."
+version = "0.1.0"
+license = { file = "LICENSE" }
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/kaili-yang/comfyui-open-ad-factory"
+
+[tool.comfy]
+PublisherId = "kaili-yang"
+DisplayName = "Open Ad Factory"
+Icon = ""

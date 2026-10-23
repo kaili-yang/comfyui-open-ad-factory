@@ -1,0 +1,27 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: comfyui-open-ad-factory
+      - uses: actions/checkout@v4
+        with:
+          repository: comfyanonymous/ComfyUI
+          path: ComfyUI
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+          pip install -r ComfyUI/requirements.txt pytest
+      - name: Test
+        working-directory: comfyui-open-ad-factory
+        run: python -m pytest tests -q
