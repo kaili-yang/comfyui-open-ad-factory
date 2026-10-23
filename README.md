@@ -62,6 +62,14 @@ No extra Python dependencies. Needs a ComfyUI recent enough to have `TextGenerat
 
 Then open **Templates → Custom nodes → comfyui-open-ad-factory → open_ad_factory**.
 
+### The ad for this repo, made by this repo
+
+`example_workflows/open_ad_factory_self_ad.json` points Open Ad Factory at its own GitHub page. The product is the app on a phone (`assets/open_ad_factory_hero.png`, drawn by `tools/make_hero.py`), the style is `playful`, and the project is `open_ad_factory_self_ad`.
+
+1. Copy `assets/open_ad_factory_hero.png` into `ComfyUI/input/`, or drop it onto the *Product photo* node.
+2. Open **Templates → comfyui-open-ad-factory → open_ad_factory_self_ad** and press **Run**.
+3. Press **Run** again to let the planner apply the judge's fixes.
+
 ## Models
 
 | Stage | Files | Folder |

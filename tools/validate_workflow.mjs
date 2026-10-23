@@ -37,7 +37,8 @@ const fail = (msg) => { console.error('FAIL:', msg); process.exitCode = 1 }
 
 // The planner, shots, assembler and judge must keep their widget values by name
 const planner = byType('OpenAdPlanner')[0]?.[1]
-if (!planner || planner.inputs.num_shots !== '4' || planner.inputs.seconds_per_shot !== 5 || planner.inputs.style !== 'ugc') fail(`planner inputs ${JSON.stringify(planner?.inputs)}`)
+if (!planner || planner.inputs.num_shots !== '4' || planner.inputs.seconds_per_shot !== 5) fail(`planner inputs ${JSON.stringify(planner?.inputs)}`)
+console.log('planner:', JSON.stringify({ style: planner?.inputs.style, project: planner?.inputs.project, audience: planner?.inputs.audience }))
 const shots = byType('OpenAdShot').map(([, n]) => n.inputs.shot).sort()
 if (JSON.stringify(shots) !== '[1,2,3,4]') fail(`shots ${shots}`)
 const page0 = byType('OpenAdProductPage')[0]?.[1]

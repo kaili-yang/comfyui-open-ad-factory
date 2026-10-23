@@ -114,7 +114,21 @@ class Builder:
         self.links.append([lid, src["id"], out_slot, dst["id"], slot, type_])
 
 
-def build(object_info):
+SELF_AD = {
+    "url": "https://github.com/kaili-yang/comfyui-open-ad-factory",
+    "image": "open_ad_factory_hero.png",
+    "project": "open_ad_factory_self_ad",
+    "style": "playful",
+    "audience": "e-commerce sellers, indie brands and marketers who pay per video on closed AI ad tools",
+    "notes": ("The product is Open Ad Factory, a free open-source ComfyUI node pack, not GitHub. "
+              "Paste any product URL and it makes a 22-second vertical video ad with voiceover, captions and an end card. "
+              "Then an AI judge watches the ad, scores it out of 100, and the next run fixes what the judge found, so the ad improves itself. "
+              "Runs on your own GPU with open-weights models only (Gemma 4, Qwen-Image 2.1, LTX-2.3): no API keys, no credits, no subscription. "
+              "The product photo shows the app on a phone. Call to action: get it free on GitHub."),
+}
+
+
+def build(object_info, url=None, image=None, notes="", project="my_ad", style="ugc", audience="", workflow_id="6b1f3f0e-0a3c-4c62-9d1b-3a5e0adfac01"):
     ltx = load_template("video_ltx2_3_i2v")
     qwen = load_template("image_qwen_image_2_1_image_edit")
     gemma = load_template("llm_gemma4_text_gen")
@@ -125,8 +139,16 @@ def build(object_info):
     note = b.add({"type": "MarkdownNote", "pos": [-900, -200], "size": [560, 820], "inputs": [], "outputs": [], "properties": {},
                   "widgets_values": [NOTE], "color": "#432", "bgcolor": "#653"})
     clip = b.copy_node(first(gemma["nodes"], "CLIPLoader"), (-300, 380), title="Load Gemma 4 (planner + judge)")
-    page = b.pack_node("OpenAdProductPage", (-300, -200), {"width": 768, "height": 1344}, size=(420, 330))
-    planner = b.pack_node("OpenAdPlanner", (200, -200), {"num_shots": str(SHOTS), "seconds_per_shot": SECONDS}, size=(400, 420))
+    page_widgets = {"width": 768, "height": 1344, "extra_notes": notes}
+    if url:
+        page_widgets["url"] = url
+    page = b.pack_node("OpenAdProductPage", (-300, -200), page_widgets, size=(420, 330))
+    if image:
+        photo = b.copy_node(first(ltx["nodes"], "LoadImage"), (-800, 700), title="Product photo")
+        photo["widgets_values"][0] = image
+        b.link(photo, 0, page, "image")
+    planner = b.pack_node("OpenAdPlanner", (200, -200), {"num_shots": str(SHOTS), "seconds_per_shot": SECONDS, "project": project,
+                                                         "style": style, "audience": audience}, size=(400, 420))
     summary = b.pack_node("PreviewAny", (200, 300), {}, size=(400, 420), title="Storyboard")
     post = b.pack_node("PreviewAny", (200, 760), {}, size=(400, 200), title="Social post caption")
     b.link(page, 0, planner, "brief")
@@ -158,7 +180,7 @@ def build(object_info):
 
     save = b.pack_node("SaveVideo", (2900, -200), {"filename_prefix": "open_ad_factory/ad"}, size=(420, 760))
     b.link(assemble, 0, save, "video")
-    judge = b.pack_node("OpenAdViralityJudge", (2400, 300), {}, size=(400, 300))
+    judge = b.pack_node("OpenAdViralityJudge", (2400, 300), {"project": project}, size=(400, 300))
     b.link(clip, 0, judge, "clip")
     b.link(assemble, 0, judge, "video")
     b.link(planner, 0, judge, "storyboard")
@@ -166,7 +188,7 @@ def build(object_info):
     b.link(judge, 1, report, "source")
 
     return {
-        "id": "6b1f3f0e-0a3c-4c62-9d1b-3a5e0adfac01",
+        "id": workflow_id,
         "revision": 0,
         "last_node_id": b.next_id - 1,
         "last_link_id": b.next_link - 1,
@@ -184,10 +206,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--server", default="http://127.0.0.1:8188")
     ap.add_argument("--out", default="build/raw_workflow.json")
+    ap.add_argument("--self-ad", action="store_true", help="Build the workflow where Open Ad Factory advertises itself.")
     args = ap.parse_args()
     with urllib.request.urlopen(args.server + "/object_info") as r:
         info = json.load(r)
-    wf = build(info)
+    wf = build(info, **SELF_AD, workflow_id="6b1f3f0e-0a3c-4c62-9d1b-3a5e0adfac02") if args.self_ad else build(info)
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(wf, f, indent=2, ensure_ascii=False)
