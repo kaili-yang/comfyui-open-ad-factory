@@ -3,3 +3,4 @@ __pycache__/
 .pytest_cache/
 build/
 .DS_Store
+open_ad_factory/fonts/cache/

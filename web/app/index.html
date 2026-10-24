@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open Ad Factory</title>
+<link rel="icon" href="static/logo.svg">
+<link rel="stylesheet" href="static/app.css">
+</head>
+<body>
+<header>
+  <div class="brand">
+    <img src="static/logo.svg" alt="">
+    <div>
+      <h1>OPEN AD FACTORY</h1>
+      <p data-i18n="tagline"></p>
+    </div>
+  </div>
+  <label class="lang">
+    <span data-i18n="uiLanguage"></span>
+    <select id="ui-lang"></select>
+  </label>
+</header>
+
+<main>
+  <section class="card form">
+    <form id="form">
+      <label><span data-i18n="url"></span>
+        <input id="url" type="url" data-i18n-placeholder="urlPlaceholder" autocomplete="off"></label>
+      <label><span data-i18n="notes"></span>
+        <textarea id="notes" rows="2" data-i18n-placeholder="notesPlaceholder"></textarea></label>
+
+      <fieldset>
+        <legend data-i18n="style"></legend>
+        <div class="chips" id="styles"></div>
+      </fieldset>
+
+      <div class="row">
+        <label><span data-i18n="adLanguage"></span><select id="ad-lang"></select></label>
+        <label><span data-i18n="audience"></span><input id="audience" data-i18n-placeholder="audiencePlaceholder"></label>
+      </div>
+      <p class="note" id="hindi-note" data-i18n="hindiNote" hidden></p>
+
+      <div class="row">
+        <label><span data-i18n="project"></span><input id="project" value="my_ad" pattern="[A-Za-z0-9_\-]+">
+          <small data-i18n="projectHint"></small></label>
+        <label class="check"><input id="feedback" type="checkbox" checked><span data-i18n="useFeedback"></span></label>
+      </div>
+
+      <div class="actions">
+        <button type="submit" id="generate" class="primary" data-i18n="generate"></button>
+        <button type="button" id="stop" class="ghost" data-i18n="stop" hidden></button>
+        <span class="meta" data-i18n="shots"></span>
+      </div>
+    </form>
+
+    <div id="progress" class="progress" hidden>
+      <h3 data-i18n="progress"></h3>
+      <div class="bar"><div id="bar"></div></div>
+      <p id="stage" class="stage"></p>
+      <ol id="stages"></ol>
+    </div>
+
+    <div id="error" class="error" hidden>
+      <h3 data-i18n="errorTitle"></h3>
+      <pre id="error-text"></pre>
+    </div>
+  </section>
+
+  <section class="card preview">
+    <div class="phone">
+      <video id="video" controls playsinline hidden></video>
+      <div id="placeholder" class="placeholder">
+        <img src="static/logo.svg" alt="">
+        <p data-i18n="preview"></p>
+      </div>
+    </div>
+    <a id="download" class="ghost button" download hidden data-i18n="download"></a>
+  </section>
+
+  <section class="card results" id="results" hidden>
+    <div class="score">
+      <span data-i18n="score"></span>
+      <strong id="score">–</strong>
+      <small>/ 100</small>
+    </div>
+    <div class="history">
+      <h3 data-i18n="history"></h3>
+      <svg id="chart" viewBox="0 0 300 90" preserveAspectRatio="none"></svg>
+      <p id="history-empty" class="meta" data-i18n="noHistory"></p>
+    </div>
+    <details open><summary data-i18n="report"></summary><pre id="report"></pre></details>
+    <details><summary data-i18n="storyboard"></summary><pre id="storyboard"></pre></details>
+    <details open><summary data-i18n="post"></summary><pre id="post"></pre>
+      <button type="button" class="ghost" id="copy" data-i18n="copy"></button></details>
+  </section>
+</main>
+
+<footer>
+  <span data-i18n="footer"></span>
+  <a href="https://github.com/kaili-yang/comfyui-open-ad-factory" target="_blank" rel="noopener">GitHub</a>
+</footer>
+
+<script type="module" src="static/app.js"></script>
+</body>
+</html>

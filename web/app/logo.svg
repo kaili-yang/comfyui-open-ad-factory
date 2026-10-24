@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Open Ad Factory">
+  <rect x="4" y="8" width="48" height="48" rx="12" fill="#f0ff4f"/>
+  <path d="M22 21 L40 32 L22 43 Z" fill="#111"/>
+  <path d="M54 4 l1.6 4.4 4.4 1.6 -4.4 1.6 -1.6 4.4 -1.6 -4.4 -4.4 -1.6 4.4 -1.6z" fill="#f0ff4f"/>
+  <path d="M60 18 l1 2.6 2.6 1 -2.6 1 -1 2.6 -1 -2.6 -2.6 -1 2.6 -1z" fill="#f0ff4f"/>
+  <path d="M47 1 l.8 2 2 .8 -2 .8 -.8 2 -.8 -2 -2 -.8 2 -.8z" fill="#f0ff4f"/>
+</svg>

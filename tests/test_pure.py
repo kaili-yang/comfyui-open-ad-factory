@@ -112,6 +112,23 @@ def test_product_canvas_and_end_card():
     assert card.shape == (10, 1280, 704, 3)
 
 
+def test_caption_script_detection_and_wrapping():
+    assert [assemble.script_of(s) for s in ("ONE LINK", "UN ENLACE", "リンクひとつ", "링크 하나", "一个链接", "एक लिंक")] == \
+        ["latin", "latin", "ja", "ko", "zh", "hi"]
+    from PIL import Image, ImageDraw
+    draw = ImageDraw.Draw(Image.new("RGB", (10, 10)))
+    font = assemble._font(40)
+    # Korean keeps its spaces and wraps at words; Chinese wraps per character
+    assert all(" " in line or len(line) <= 3 for line in assemble._wrap(draw, "새로운 방법 링크 하나로 광고 완성", font, 160))
+    assert assemble._wrap(draw, "THE NEW WAY IS HERE", font, 10000) == ["THE NEW WAY IS HERE"]
+
+
+def test_hindi_needs_raqm():
+    from PIL import features
+    assert assemble.can_render("नया तरीका") == features.check_feature("raqm")
+    assert assemble.can_render("ONE LINK")
+
+
 def test_auto_background_picks_white_for_packshots():
     packshot = torch.ones(1, 200, 200, 3)
     packshot[:, 80:120, 80:120] = 0.1

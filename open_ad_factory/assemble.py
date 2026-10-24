@@ -3,12 +3,15 @@
 Images follow the ComfyUI layout [frames, height, width, 3] float in 0..1.
 Audio follows the ComfyUI AUDIO dict: {"waveform": [batch, channels, samples], "sample_rate": int}.
 """
+import logging
 import os
+import shutil
+import urllib.request
 
 import numpy as np
 import torch
 import torch.nn.functional as F
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, features
 
 
 def _resize(img, width, height):
@@ -57,20 +60,70 @@ def product_canvas(img, width, height, fill=0.82, background="blur"):
     return bg.clamp(0, 1)
 
 
-DEFAULT_FONT = os.path.join(os.path.dirname(__file__), "fonts", "Anton-Regular.ttf")
+FONT_DIR = os.path.join(os.path.dirname(__file__), "fonts")
+DEFAULT_FONT = os.path.join(FONT_DIR, "Anton-Regular.ttf")
+DEVANAGARI_FONT = os.path.join(FONT_DIR, "NotoSansDevanagari.ttf")
+# Noto Sans CJK (SIL OFL) is 20 MB, so it is fetched once on the first CJK caption instead of shipping in the repo
+CJK_URL = "https://github.com/notofonts/noto-cjk/raw/main/Sans/OTC/NotoSansCJK-Bold.ttc"
+CJK_FONT = os.path.join(FONT_DIR, "cache", "NotoSansCJK-Bold.ttc")
+CJK_SYSTEM_FONTS = ("/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc", "/usr/share/fonts/noto-cjk/NotoSansCJK-Bold.ttc",
+                    "/usr/share/fonts/google-noto-cjk/NotoSansCJK-Bold.ttc")
+CJK_FACE = {"ja": 0, "ko": 1, "zh": 2}  # face order inside NotoSansCJK-Bold.ttc
 
 
-def _font(size, font_path=""):
-    return ImageFont.truetype(font_path or DEFAULT_FONT, size)
+def script_of(text):
+    if any("\uac00" <= c <= "\ud7af" or "\u1100" <= c <= "\u11ff" for c in text):
+        return "ko"
+    if any("\u3040" <= c <= "\u30ff" for c in text):
+        return "ja"
+    if any("\u4e00" <= c <= "\u9fff" or "\u3400" <= c <= "\u4dbf" for c in text):
+        return "zh"
+    if any("\u0900" <= c <= "\u097f" for c in text):
+        return "hi"
+    return "latin"
+
+
+def _cjk_font():
+    for path in CJK_SYSTEM_FONTS:
+        if os.path.exists(path):
+            return path
+    if not os.path.exists(CJK_FONT):
+        logging.info("Open Ad Factory: downloading Noto Sans CJK for captions (one time, 20 MB)")
+        os.makedirs(os.path.dirname(CJK_FONT), exist_ok=True)
+        with urllib.request.urlopen(CJK_URL, timeout=120) as r, open(CJK_FONT + ".part", "wb") as f:
+            shutil.copyfileobj(r, f)
+        os.replace(CJK_FONT + ".part", CJK_FONT)
+    return CJK_FONT
+
+
+def _font(size, font_path="", text=""):
+    if font_path:
+        return ImageFont.truetype(font_path, size)
+    script = script_of(text)
+    if script in CJK_FACE:
+        return ImageFont.truetype(_cjk_font(), size, index=CJK_FACE[script])
+    if script == "hi":
+        font = ImageFont.truetype(DEVANAGARI_FONT, size)
+        font.set_variation_by_name("Bold")
+        return font
+    return ImageFont.truetype(DEFAULT_FONT, size)
+
+
+def can_render(text):
+    """Devanagari needs complex text shaping (Pillow with libraqm); without it the letters come out in the wrong order."""
+    return script_of(text) != "hi" or features.check_feature("raqm")
 
 
 def _wrap(draw, text, font, max_width):
+    # Chinese and Japanese have no spaces between words, so they wrap per character; Korean uses spaces like Latin
+    per_char = script_of(text) in ("ja", "zh")
+    tokens, sep = (list(text.replace(" ", "")), "") if per_char else (text.split(), " ")
     lines, current = [], ""
-    for word in text.split():
-        candidate = f"{current} {word}".strip()
+    for token in tokens:
+        candidate = f"{current}{sep}{token}" if current else token
         if current and draw.textlength(candidate, font=font) > max_width:
             lines.append(current)
-            current = word
+            current = token
         else:
             current = candidate
     if current:
@@ -83,7 +136,7 @@ def text_layer(width, height, text, center_y, size_ratio=0.055, font_path="", fi
     layer = Image.new("RGBA", (width, height), (0, 0, 0, 0))
     draw = ImageDraw.Draw(layer)
     size = max(12, round(height * size_ratio))
-    font = _font(size, font_path)
+    font = _font(size, font_path, text)
     lines = _wrap(draw, text, font, width * 0.86)
     spacing = round(size * 0.25)
     block = draw.multiline_textbbox((0, 0), "\n".join(lines), font=font, spacing=spacing, align="center")
@@ -108,8 +161,9 @@ def composite(frames, layer):
 
 def end_card(product, width, height, frames, headline, cta, font_path=""):
     canvas = product_canvas(product, width, height, fill=0.66, background="dark")
-    canvas = composite(canvas, text_layer(width, height, headline.upper(), 0.14, 0.07, font_path))
-    canvas = composite(canvas, text_layer(width, height, cta.upper(), 0.86, 0.045, font_path, fill=(20, 20, 20, 255), pill=(240, 255, 79, 255)))
+    if can_render(headline + cta):
+        canvas = composite(canvas, text_layer(width, height, headline.upper(), 0.14, 0.07, font_path))
+        canvas = composite(canvas, text_layer(width, height, cta.upper(), 0.86, 0.045, font_path, fill=(20, 20, 20, 255), pill=(240, 255, 79, 255)))
     return canvas.expand(frames, -1, -1, -1).clone()
 
 

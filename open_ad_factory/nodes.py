@@ -1,5 +1,6 @@
 import io as _io
 import json
+import logging
 import os
 import re
 from fractions import Fraction
@@ -197,7 +198,7 @@ class OpenAdAssemble(io.ComfyNode):
                 io.Boolean.Input("captions", default=True),
                 io.Float.Input("caption_position", default=0.72, min=0.05, max=0.95, step=0.01, tooltip="Vertical center of captions, 0 = top. Keep clear of the app UI at the bottom."),
                 io.Float.Input("end_card_seconds", default=2.0, min=0.0, max=6.0, step=0.5),
-                io.String.Input("font_path", default="", advanced=True, tooltip="Optional .ttf/.otf file. Needed for non-Latin captions."),
+                io.String.Input("font_path", default="", advanced=True, tooltip="Optional .ttf/.otf file. Leave empty to pick a font for the caption's script automatically (Latin, Chinese, Japanese, Korean, Hindi)."),
             ],
             outputs=[io.Video.Output(display_name="video")],
         )
@@ -205,6 +206,9 @@ class OpenAdAssemble(io.ComfyNode):
     @classmethod
     def execute(cls, storyboard, product_image, video_1, captions, caption_position, end_card_seconds, font_path, video_2=None, video_3=None, video_4=None, video_5=None) -> io.NodeOutput:
         videos = [v for v in (video_1, video_2, video_3, video_4, video_5) if v is not None]
+        if captions and not assemble.can_render(storyboard["shots"][0]["caption"]):
+            logging.warning("Open Ad Factory: this Pillow build has no libraqm, so Devanagari captions would render garbled; captions are skipped.")
+            captions = False
         segments, frame_rate = [], None
         for i, video in enumerate(videos):
             c = video.get_components()

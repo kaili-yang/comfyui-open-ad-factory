@@ -10,6 +10,16 @@ An open-weights rebuild of Higgsfield's *Click to Ad*, as a ComfyUI node pack. B
 
 Every "product URL to video ad" tool we found (CutAgent, AdFlow Studio, Atlas Marketing Studio, Prizmad, and others) calls closed models (Veo, Kling, Seedance, HeyGen, ElevenLabs) through paid APIs. This one runs on your own GPU.
 
+## The app
+
+Open **http://127.0.0.1:8188/open_ad_factory/**, or use **Open Ad Factory** in the ComfyUI menu. Paste a link, pick a style, press **Generate ad**. Live progress shows each stage, then the ad plays in a phone frame next to the virality score, the score history across runs, the judge's report, the storyboard and a copy-ready post caption. **Generate an improved cut** runs again with the judge's notes.
+
+- **Interface in 6 languages:** English, Español, 日本語, 한국어, 中文, हिन्दी. It starts in the browser's language and remembers your choice.
+- **Ad language:** follows the interface language unless you pick another. The planner writes the voiceover and captions in that language, and LTX-2.3 speaks it.
+- **Caption fonts are chosen by script:** Anton for Latin, Noto Sans CJK for Chinese, Japanese and Korean (taken from the system or downloaded once, 20 MB), and Noto Sans Devanagari for Hindi (bundled). Hindi shaping needs Pillow built with libraqm; without it the ad keeps its Hindi voiceover and skips captions rather than showing broken letters.
+
+The app submits the same graph as `example_workflows/open_ad_factory.json`, flattened into `web/app/prompt.json`, so nothing runs that you could not also open as a workflow.
+
 ## How it works
 
 ```mermaid
