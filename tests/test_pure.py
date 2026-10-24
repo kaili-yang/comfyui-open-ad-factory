@@ -42,9 +42,21 @@ def test_parse_product_og_only():
 
 
 def test_parse_shopify_json():
-    info = fetch.parse_shopify_json({"product": {"title": "Runner", "body_html": "<b>Light</b>", "vendor": "Allbirds",
-                                                 "variants": [{"price": "100.00"}], "images": [{"src": "https://cdn/x.png"}]}}, "u")
-    assert info["name"] == "Runner" and info["description"] == "Light" and info["images"] == ["https://cdn/x.png"]
+    info = fetch.parse_shopify_json({"product": {"title": "Glide Legging", "body_html": "<b>Soft</b>", "vendor": "VEYRIN",
+                                                 "variants": [{"price": "88.00"}], "images": [{"src": "https://cdn/x.png"}]}}, "u")
+    assert info["name"] == "Glide Legging" and info["description"] == "Soft" and info["images"] == ["https://cdn/x.png"]
+    assert info["brand"] == "VEYRIN" and info["price"] == "88.00"
+
+
+def test_demo_store_page_parses():
+    """The bundled VEYRIN demo page is what every default and demo points at; it must stay parseable."""
+    import os
+    path = os.path.join(os.path.dirname(__file__), "..", "site", "demo-store", "veyrin-glide-legging", "index.html")
+    with open(path, encoding="utf-8") as f:
+        info = fetch.parse_product_html(f.read(), "https://kaili-yang.github.io/comfyui-open-ad-factory/demo-store/veyrin-glide-legging/")
+    assert info["name"] == 'Glide High-Rise Legging 25"' and info["brand"] == "VEYRIN"
+    assert (info["price"], info["currency"]) == ("88.00", "USD")
+    assert len(info["images"]) == 3 and info["images"][0].endswith("glide-legging-front.jpg")
 
 
 def test_fetch_rejects_bad_scheme():

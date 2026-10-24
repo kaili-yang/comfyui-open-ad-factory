@@ -20,8 +20,8 @@ const REVIEW = {
   fixes: ['Shot 4: name the free-returns offer', 'Shot 2: cut the pause before the line'],
 }
 const BOARD = {
-  product_name: "Men's Tree Runner", headline: 'Walk on clouds', cta: 'Shop now', post_caption: 'Light, breathable, made from trees.',
-  hashtags: ['#allbirds', '#sneakers'], brief: 'Product: Tree Runner\nURL: https://www.allbirds.com/products/mens-tree-runners',
+  product_name: 'Glide High-Rise Legging', headline: 'Move without limits', cta: 'Shop now', post_caption: 'Buttery-soft and squat-proof.',
+  hashtags: ['#veyrin', '#yoga'], brief: 'Product: Glide High-Rise Legging\nURL: https://kaili-yang.github.io/comfyui-open-ad-factory/demo-store/veyrin-glide-legging/',
   shots: ['hook', 'problem', 'solution', 'cta'].map((role, i) => ({ role, caption: `CAPTION ${i + 1}`, voiceover: `Line ${i + 1}` })),
 }
 const SUMMARY = { name: 'ui_test', history: [{ score: 61 }, { score: 70 }, { score: 78.5 }], review: REVIEW, storyboard: BOARD, video: null, updated: Date.now() / 1000 - 3600 }
@@ -68,7 +68,7 @@ console.log('models:', await page.textContent('#models-status'), '| device:', aw
 if (!(await page.textContent('#conn-text')).includes('Connected')) fail('not connected to ComfyUI')
 
 // 3. Product preview reads the real page through the plugin API
-await page.fill('#url', 'https://www.allbirds.com/products/mens-tree-runners')
+await page.fill('#url', 'https://kaili-yang.github.io/comfyui-open-ad-factory/demo-store/veyrin-glide-legging/')
 await page.click('#fetch')
 await page.waitForFunction(() => ['ok', 'error'].includes(document.getElementById('product').dataset.state), null, { timeout: 30000 })
 const productState = await page.getAttribute('#product', 'data-state')
@@ -88,7 +88,7 @@ await page.route('**/models/*', (route) => route.fulfill({ json: byFolder[route.
 await page.reload()
 await page.waitForFunction(() => document.getElementById('models-badge').classList.contains('ok'))
 await page.selectOption('#ui-lang', 'zh')
-await page.fill('#url', 'https://www.allbirds.com/products/mens-tree-runners')
+await page.fill('#url', 'https://kaili-yang.github.io/comfyui-open-ad-factory/demo-store/veyrin-glide-legging/')
 await page.click('#advanced summary')
 await page.fill('#project', 'ui_test')
 await page.selectOption('#ad-lang', 'ja')
@@ -102,7 +102,7 @@ await page.waitForFunction(() => !document.getElementById('phone-live').hidden)
 await page.waitForTimeout(200)
 const get = (t) => Object.values(submitted?.prompt ?? {}).find((n) => n.class_type === t)?.inputs ?? {}
 const planner = get('OpenAdPlanner')
-if (get('OpenAdProductPage').url !== 'https://www.allbirds.com/products/mens-tree-runners') fail('url not patched')
+if (get('OpenAdProductPage').url !== 'https://kaili-yang.github.io/comfyui-open-ad-factory/demo-store/veyrin-glide-legging/') fail('url not patched')
 if (planner.language !== 'Japanese' || planner.style !== 'cinematic' || planner.project !== 'ui_test') fail(`planner not patched: ${JSON.stringify(planner)}`)
 if (get('SaveVideo').filename_prefix !== 'open_ad_factory/ui_test' || get('OpenAdViralityJudge').project !== 'ui_test') fail('save/judge not patched')
 if (get('OpenAdViralityJudge').language !== 'Simplified Chinese') fail(`judge should report in the interface language: ${get('OpenAdViralityJudge').language}`)

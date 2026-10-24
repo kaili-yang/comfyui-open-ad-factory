@@ -18,6 +18,8 @@ from . import assemble, fetch, judge, storyboard as sb
 
 Storyboard = io.Custom("OPEN_AD_STORYBOARD")
 CATEGORY = "Open Ad Factory"
+# VEYRIN is a made-up brand with AI-generated product photos, so demos carry no third-party IP
+DEMO_PRODUCT_URL = "https://kaili-yang.github.io/comfyui-open-ad-factory/demo-store/veyrin-glide-legging/"
 
 
 def _project_dir(project):
@@ -54,7 +56,7 @@ class OpenAdProductPage(io.ComfyNode):
             category=CATEGORY,
             description="Reads a product URL (Shopify, schema.org Product or Open Graph pages) and returns a product brief, the product photo, and a vertical canvas for the keyframe model.",
             inputs=[
-                io.String.Input("url", default="https://www.allbirds.com/products/mens-tree-runners", tooltip="Product page URL. Leave empty to use only the manual fields and image."),
+                io.String.Input("url", default=DEMO_PRODUCT_URL, tooltip="Product page URL. Leave empty to use only the manual fields and image. The default is a fictional demo store."),
                 io.Int.Input("image_index", default=0, min=0, max=20, tooltip="Which product image on the page to use."),
                 io.Int.Input("width", default=768, min=256, max=2048, step=32, tooltip="Canvas width for the keyframe model."),
                 io.Int.Input("height", default=1344, min=256, max=2048, step=32, tooltip="Canvas height for the keyframe model."),

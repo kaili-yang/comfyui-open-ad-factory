@@ -42,7 +42,14 @@ if (coreOnly) {
   const foreign = [...new Set(Object.values(result.output).map((n) => n.class_type))].filter((t) => !info[t] || String(info[t].python_module).startsWith('custom_nodes'))
   if (foreign.length) fail(`non built-in nodes: ${foreign}`)
   console.log('built-in classes:', new Set(Object.values(result.output).map((n) => n.class_type)).size)
-
+}
+const videoAd = byType('ConcatenateVideo').length > 0
+if (coreOnly && !videoAd) {
+  // Image-only asset workflows: every SaveImage must be fed
+  const saves = byType('SaveImage')
+  console.log('image outputs:', saves.map(([, n]) => n.inputs.filename_prefix))
+  if (!saves.length || saves.some(([, n]) => !Array.isArray(n.inputs.images))) fail('SaveImage not wired')
+} else if (coreOnly) {
   const concat = byType('ConcatenateVideo')[0]?.[1]
   for (let i = 0; i < 4; i++) if (!Array.isArray(concat?.inputs[`videos.video${i}`])) fail(`concatenate videos.video${i} not wired`)
   const shots = byType('LTXVPreprocess').length
