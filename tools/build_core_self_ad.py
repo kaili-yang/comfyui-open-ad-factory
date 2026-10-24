@@ -53,19 +53,29 @@ SHOTS = [
     },
 ]
 
-JUDGE_PROMPT = """You are a strict short-video ad reviewer. Watch this vertical video ad for Open Ad Factory (a free, open-source ComfyUI tool that turns a product link into a video ad and grades it) and listen to its audio.
+LLM_FILE = "qwen3vl_8b_int8_convrot.safetensors"  # already installed for Qwen-Image 2.1; loaded as a plain Qwen3-VL-8B for text generation
+JUDGE_FRAMES = (12, 90)  # 0.5 s and 3.6 s into each 5 s shot at 25 fps
 
-Score each criterion from 0 to 10: hook (first 2 seconds stop the scroll), product_clarity, message, pacing, audio, cta, visual_quality (no AI artifacts).
-Then give the weighted total out of 100 with weights hook 25, product_clarity 20, message 15, pacing 15, audio 10, cta 10, visual_quality 5.
-Finish with the three most important fixes for the next cut, each naming the shot (1-4).
-
-Format:
-Scores: hook X/10, product_clarity X/10, message X/10, pacing X/10, audio X/10, cta X/10, visual_quality X/10
-Virality score: N/100
-Fixes:
-1. ...
-2. ...
-3. ..."""
+JUDGE_PROMPT = "\n".join([
+    "You are a strict short-video ad reviewer. These 8 images are frames from a 20-second vertical video ad for Open Ad Factory "
+    "(a free, open-source ComfyUI tool that turns a product link into a video ad and grades it). "
+    "They are in order, two per shot: shot 1 at 0.5 s and 3.6 s, then shot 2, shot 3, shot 4.",
+    "",
+    "Spoken lines and captions of the 4 shots:",
+    *[f"Shot {i + 1}: says \"{s['motion'].rsplit(chr(34), 2)[-2]}\" / caption \"{s['caption']}\"" for i, s in enumerate(SHOTS)],
+    "",
+    "Score each criterion from 0 to 10: hook (shot 1 stops the scroll), product_clarity, message, pacing, cta, visual_quality (no AI artifacts such as warped hands, faces or text).",
+    "Then give the weighted total out of 100 with weights hook 25, product_clarity 20, message 20, pacing 15, cta 15, visual_quality 5.",
+    "Finish with the three most important fixes for the next cut, each naming the shot (1-4).",
+    "",
+    "Format:",
+    "Scores: hook X/10, product_clarity X/10, message X/10, pacing X/10, cta X/10, visual_quality X/10",
+    "Virality score: N/100",
+    "Fixes:",
+    "1. ...",
+    "2. ...",
+    "3. ...",
+])
 
 POST_PROMPT = """Write the TikTok and Instagram Reels caption for a short ad about Open Ad Factory: a free, open-source ComfyUI node pack. Paste any product URL and it makes a vertical video ad with voiceover and captions, then an AI judge scores the ad and the next run improves it. It runs on your own GPU with open-weights models only, no API keys, no credits.
 Two short punchy sentences, then the link github.com/kaili-yang/comfyui-open-ad-factory, then five hashtags. Plain text only."""
@@ -77,17 +87,34 @@ The ad for Open Ad Factory, made with the Open Ad Factory pipeline, rebuilt with
 2. **Qwen-Image 2.1 Edit** makes the first frame of each of the 4 shots. Shots 2 and 4 reuse the creator from shot 1 so she stays the same person.
 3. **LTX-2.3** animates each frame with her voice and sound (5 s each, 704x1280).
 4. **Draw Text Overlay** burns in captions; **Concatenate Video** joins the shots; **Save Video** writes the 20 s ad.
-5. **Gemma 4** watches and listens to the ad and gives a virality score out of 100 with fixes, plus writes the social post caption.
+5. **Qwen3-VL-8B** looks at 8 key frames (2 per shot) with the script, gives a virality score out of 100 with fixes, and writes the social post caption.
 
 Edit the storyboard directly: prompts on the Shot keyframe and Shot video nodes, captions on the Caption nodes.
 
-All models are the ones from the official templates *Qwen Image 2.1 Text to Image*, *Image Edit (Qwen Image 2.1)*, *LTX-2.3 Image to Video* and *Gemma 4 Text Generation*."""
+## Models (nothing extra to download)
+- Qwen Image 2.1: `qwen_image_2.1_int8_convrot`, `qwen3vl_8b_int8_convrot`, `qwen_image_2.1_vae_bf16`
+- LTX-2.3: `ltx-2.3-22b-dev-fp8`, `gemma_3_12B_it_fp4_mixed`, `ltx-2.3-spatial-upscaler-x2-1.1`, `ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16`, `gemma-3-12b-it-abliterated_lora_rank64_bf16`
+
+The Qwen prompt enhancer (`refine_prompt`) is off. Its model slot points at `qwen3vl_8b_int8_convrot` so no Qwen3.5 PE file is needed; turning it on uses plain Qwen3-VL-8B as the rewriter. The judge and caption writer reuse the same `qwen3vl_8b_int8_convrot` instead of Gemma 4, so they read frames and the script but do not hear the audio."""
+
+PE_FILES = ("qwen3.5_9b_qwen_image_2.1_pe_t2i.int8_convrot.safetensors", "qwen3.5_9b_qwen_image_2.1_pe_i2i.int8_convrot.safetensors")
+
+
+def swap_pe_model(template):
+    """Point the Qwen prompt-enhancer slot at the already installed Qwen3-VL-8B instead of the separate Qwen3.5 PE files."""
+    for sg in template["definitions"]["subgraphs"]:
+        for n in sg["nodes"]:
+            if n["type"] == "CLIPLoader" and n["widgets_values"][0] in PE_FILES:
+                n["widgets_values"][:2] = [LLM_FILE, "stable_diffusion"]
+    for n in template["nodes"]:
+        n["widgets_values"] = [LLM_FILE if v in PE_FILES else v for v in n.get("widgets_values") or []]
+    return template
 
 
 def build(info):
     ltx = load_template("video_ltx2_3_i2v")
-    edit = load_template("image_qwen_image_2_1_image_edit")
-    t2i = load_template("image_qwen_image_2_1_t2i")
+    edit = swap_pe_model(load_template("image_qwen_image_2_1_image_edit"))
+    t2i = swap_pe_model(load_template("image_qwen_image_2_1_t2i"))
     gemma = load_template("llm_gemma4_text_gen")
     sub = lambda t: next(n for n in t["nodes"] if n["type"] == t["definitions"]["subgraphs"][0]["id"])
 
@@ -108,6 +135,11 @@ def build(info):
                        {"name": "complete_audio", "type": "AUDIO", "link": None}],
                     "outputs": [{"name": "VIDEO", "type": "VIDEO", "links": []}],
                     "properties": {"Node name for S&R": "ConcatenateVideo"}, "widgets_values": ["auto"]})
+
+    frames = b.add({"type": "BatchImagesNode", "pos": [2300, 1900], "size": [260, 300],
+                    "inputs": [{"name": f"images.image{k}", "type": "IMAGE", "link": None} for k in range(len(SHOTS) * len(JUDGE_FRAMES))],
+                    "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": []}],
+                    "properties": {"Node name for S&R": "BatchImagesNode"}, "widgets_values": []})
 
     keyframes = []
     for i, shot in enumerate(SHOTS):
@@ -138,26 +170,31 @@ def build(info):
         b.link(parts, 2, clip_video, "fps")
         b.link(parts, 1, clip_video, "audio")
         b.link(clip_video, 0, concat, f"videos.video{i}")
+        for j, index in enumerate(JUDGE_FRAMES):
+            pick = b.pack_node("ImageFromBatch", (1800 + j * 280, y + 220), {"batch_index": index, "length": 1}, size=(260, 130),
+                               title=f"Shot {i + 1} frame @{index}")
+            b.link(cap, 0, pick, "image")
+            b.link(pick, 0, frames, f"images.image{i * len(JUDGE_FRAMES) + j}")
 
     save = b.pack_node("SaveVideo", (3400, -300), {"filename_prefix": "open_ad_factory/self_ad"}, size=(420, 760))
     b.link(concat, 0, save, "video")
 
-    clip = b.copy_node(first(gemma["nodes"], "CLIPLoader"), (3000, 600), title="Load Gemma 4 (judge + caption)")
-    final_parts = b.pack_node("GetVideoComponents", (3000, 100), {}, size=(260, 160))
-    b.link(concat, 0, final_parts, "video")
-    small = b.pack_node("ImageScaleBy", (3000, 340), {"upscale_method": "area", "scale_by": 0.35}, size=(260, 120))
-    b.link(final_parts, 0, small, "image")
+    clip = b.copy_node(first(gemma["nodes"], "CLIPLoader"), (3000, 600), title="Load Qwen3-VL-8B (judge + caption)")
+    clip["widgets_values"][:2] = [LLM_FILE, "stable_diffusion"]
+    small = b.pack_node("ImageScaleBy", (3000, 340), {"upscale_method": "area", "scale_by": 0.5}, size=(260, 120))
+    b.link(frames, 0, small, "image")
+    frames_preview = b.pack_node("PreviewImage", (2600, 1900), {}, size=(360, 300), title="Frames the judge sees")
+    b.link(small, 0, frames_preview, "images")
 
-    judge = b.copy_node(first(gemma["nodes"], "TextGenerate"), (3400, 520), title="Virality judge (Gemma 4)")
+    judge = b.copy_node(first(gemma["nodes"], "TextGenerate"), (3400, 520), title="Virality judge (Qwen3-VL-8B)")
     judge["widgets_values"][0] = JUDGE_PROMPT
     judge["widgets_values"][2:4] = ["on", 0.3]
     b.link(clip, 0, judge, "clip")
-    b.link(small, 0, judge, "video")
-    b.link(final_parts, 1, judge, "audio")
+    b.link(small, 0, judge, "image")
     report = b.pack_node("PreviewAny", (3850, 520), {}, size=(460, 520), title="Virality report")
     b.link(judge, 0, report, "source")
 
-    post = b.copy_node(first(gemma["nodes"], "TextGenerate"), (3400, 1150), title="Social post caption (Gemma 4)")
+    post = b.copy_node(first(gemma["nodes"], "TextGenerate"), (3400, 1150), title="Social post caption (Qwen3-VL-8B)")
     post["widgets_values"][0] = POST_PROMPT
     b.link(clip, 0, post, "clip")
     post_preview = b.pack_node("PreviewAny", (3850, 1150), {}, size=(460, 300), title="Social post caption")

@@ -52,8 +52,12 @@ if (coreOnly) {
   if (ltxPrompts.length !== 4) fail(`expected 4 LTX shot prompts, got ${ltxPrompts.length}`)
   const editPrompts = byType('TextEncodeQwenImage21').length
   console.log('LTX shot prompts:', ltxPrompts.length, 'Qwen encode nodes:', editPrompts)
-  const judges = byType('TextGenerate').filter(([, n]) => Array.isArray(n.inputs.video) && Array.isArray(n.inputs.audio))
-  if (judges.length !== 1) fail('judge TextGenerate must get video and audio')
+  const judges = byType('TextGenerate').filter(([id, n]) => !id.includes(':') && (Array.isArray(n.inputs.video) || Array.isArray(n.inputs.image)))
+  if (judges.length !== 1) fail('judge TextGenerate must get frames')
+  const batch = byType('BatchImagesNode').find(([id]) => !id.includes(':'))?.[1]
+  const linked = Object.keys(batch?.inputs ?? {}).filter((k) => Array.isArray(batch.inputs[k])).length
+  console.log('judge frames batched:', linked)
+  if (linked !== 8) fail(`expected 8 judge frames, got ${linked}`)
 } else {
   // The planner, shots, assembler and judge must keep their widget values by name
   const planner = byType('OpenAdPlanner')[0]?.[1]
