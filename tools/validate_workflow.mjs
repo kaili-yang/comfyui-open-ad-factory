@@ -45,11 +45,15 @@ if (coreOnly) {
 
   const concat = byType('ConcatenateVideo')[0]?.[1]
   for (let i = 0; i < 4; i++) if (!Array.isArray(concat?.inputs[`videos.video${i}`])) fail(`concatenate videos.video${i} not wired`)
+  const shots = byType('LTXVPreprocess').length
+  for (let i = 0; i < shots; i++) if (!Array.isArray(concat?.inputs[`videos.video${i}`])) fail(`concatenate videos.video${i} not wired`)
   const captions = byType('TextOverlay').map(([, n]) => n.inputs.text)
   console.log('captions:', JSON.stringify(captions))
-  if (captions.length !== 4) fail('expected 4 captions')
-  const ltxPrompts = byType('PrimitiveStringMultiline').map(([, n]) => n.inputs.value).filter((v) => typeof v === 'string' && v.includes('says') && !v.startsWith('#'))
-  if (ltxPrompts.length !== 4) fail(`expected 4 LTX shot prompts, got ${ltxPrompts.length}`)
+  if (captions.length < shots) fail(`expected at least ${shots} captions`)
+  const ltxPrompts = byType('PrimitiveStringMultiline').map(([, n]) => n.inputs.value).filter((v) => typeof v === 'string' && /: "[^"]+"$/.test(v.trim()) && !v.startsWith('#'))
+  if (ltxPrompts.length !== shots) fail(`expected ${shots} LTX shot prompts, got ${ltxPrompts.length}`)
+  const marks = byType('ImageCompositeMasked').filter(([, n]) => Array.isArray(n.inputs.source) && Array.isArray(n.inputs.destination))
+  console.log('logo watermarks:', marks.length, JSON.stringify(marks[0]?.[1].inputs ?? {}))
   const editPrompts = byType('TextEncodeQwenImage21').length
   console.log('LTX shot prompts:', ltxPrompts.length, 'Qwen encode nodes:', editPrompts)
   const judges = byType('TextGenerate').filter(([id, n]) => !id.includes(':') && (Array.isArray(n.inputs.video) || Array.isArray(n.inputs.image)))
@@ -57,7 +61,7 @@ if (coreOnly) {
   const batch = byType('BatchImagesNode').find(([id]) => !id.includes(':'))?.[1]
   const linked = Object.keys(batch?.inputs ?? {}).filter((k) => Array.isArray(batch.inputs[k])).length
   console.log('judge frames batched:', linked)
-  if (linked !== 8) fail(`expected 8 judge frames, got ${linked}`)
+  if (linked < 8) fail(`expected at least 8 judge frames, got ${linked}`)
 } else {
   // The planner, shots, assembler and judge must keep their widget values by name
   const planner = byType('OpenAdPlanner')[0]?.[1]
@@ -75,6 +79,7 @@ if (coreOnly) {
 
 // Qwen-Image 2.1 decodes RGBA; every LTX first frame must come through SplitImageWithAlpha
 const rgbIds = new Set(byType('SplitImageWithAlpha').map(([id]) => id))
+for (const [id, n] of byType('ResizeAndPadImage')) if (Array.isArray(n.inputs.image) && rgbIds.has(n.inputs.image[0])) rgbIds.add(id)
 const ltxFirstFrames = byType('LTXVPreprocess').length
 const fedRgb = byType('ResizeImageMaskNode').filter(([id, n]) => id.includes(':') && Array.isArray(n.inputs.input) && rgbIds.has(n.inputs.input[0])).length
 console.log('LTX stages:', ltxFirstFrames, 'first frames via SplitImageWithAlpha:', fedRgb)
