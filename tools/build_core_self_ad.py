@@ -15,14 +15,12 @@ import json
 import os
 import urllib.request
 
-from build_workflow import Builder, first, load_template
+from build_workflow import QWEN3VL as LLM_FILE, Builder, first, load_template, swap_pe_model
 
 WIDTH, HEIGHT = 704, 1280
 CANVAS_W, CANVAS_H = 768, 1344
 WATERMARK, WATERMARK_MARGIN, WATERMARK_BOTTOM = 112, 28, 230
 GITHUB = "github.com/kaili-yang/comfyui-open-ad-factory"
-LLM_FILE = "qwen3vl_8b_int8_convrot.safetensors"  # already installed for Qwen-Image 2.1; loaded as a plain Qwen3-VL-8B for text generation
-PE_FILES = ("qwen3.5_9b_qwen_image_2.1_pe_t2i.int8_convrot.safetensors", "qwen3.5_9b_qwen_image_2.1_pe_i2i.int8_convrot.safetensors")
 
 LOGO_PROMPT = (
     "Flat vector brand logo on a solid pure black background. Centered icon: a bright lime-yellow rounded square with a bold "
@@ -151,17 +149,6 @@ Edit the storyboard on the nodes: Shot keyframe (image prompt), Shot video (moti
 - LTX-2.3: `ltx-2.3-22b-dev-fp8`, `gemma_3_12B_it_fp4_mixed`, `ltx-2.3-spatial-upscaler-x2-1.1`, `ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16`, `gemma-3-12b-it-abliterated_lora_rank64_bf16`
 
 The Qwen prompt enhancer (`refine_prompt`) is off; its model slot points at `qwen3vl_8b_int8_convrot` so no Qwen3.5 PE file is needed. The judge and caption writer reuse `qwen3vl_8b_int8_convrot`, so they read frames and the script but do not hear the audio."""
-
-
-def swap_pe_model(template):
-    """Point the Qwen prompt-enhancer slot at the already installed Qwen3-VL-8B instead of the separate Qwen3.5 PE files."""
-    for sg in template["definitions"]["subgraphs"]:
-        for n in sg["nodes"]:
-            if n["type"] == "CLIPLoader" and n["widgets_values"][0] in PE_FILES:
-                n["widgets_values"][:2] = [LLM_FILE, "stable_diffusion"]
-    for n in template["nodes"]:
-        n["widgets_values"] = [LLM_FILE if v in PE_FILES else v for v in n.get("widgets_values") or []]
-    return template
 
 
 def build(info):

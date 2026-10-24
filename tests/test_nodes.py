@@ -98,7 +98,8 @@ def test_judge_feedback_loop_reaches_planner(output_dir):
     board["brief"] = "Product: Acme Bottle"
     clip = FakeClip(review_json())
     score, report, notes = OpenAdViralityJudge.execute(clip=clip, video=fake_video(50), storyboard=board, project="loop", save_feedback=True,
-                                                       frame_size=448, seed=0, max_length=512).result
+                                                       frame_size=448, seed=0, max_length=512, language="Japanese").result
+    assert "Write the strengths, fixes and verdict in Japanese" in clip.calls[0]["prompt"]
     assert score == 60.0 and "60.0 / 100" in report and notes == "- Shot 1: open on motion"
     assert clip.calls[0]["video"].shape[0] == 48 and clip.calls[0]["audio"] is not None
 

@@ -12,7 +12,13 @@ Every "product URL to video ad" tool we found (CutAgent, AdFlow Studio, Atlas Ma
 
 ## The app
 
-Open **http://127.0.0.1:8188/open_ad_factory/**, or use **Open Ad Factory** in the ComfyUI menu. Paste a link, pick a style, press **Generate ad**. Live progress shows each stage, then the ad plays in a phone frame next to the virality score, the score history across runs, the judge's report, the storyboard and a copy-ready post caption. **Generate an improved cut** runs again with the judge's notes.
+Open **http://127.0.0.1:8188/open_ad_factory/**, or use **Open Ad Factory** in the ComfyUI menu.
+
+- **Create:** paste a product link and see a product preview card (name, brand, price, photo) before spending any GPU time. Pick one of four creative directions, the ad language, and optional notes, audience and project. Press **Generate ad** or ⌘/Ctrl + Enter.
+- **Studio:** a live pipeline (read page → storyboard → shots → edit → grade) with elapsed time and each shot's first frame appearing as it renders, then the finished ad in a phone frame with a download button.
+- **Results:** a score gauge with grade, a bar per criterion, the verdict, strengths and fixes; the storyboard as shot cards; the post caption with hashtags and a copy button; and a score history chart across runs. **Generate improved cut** runs again with the judge's notes.
+- **Projects:** every ad made on the machine, with its latest video (plays on hover), score, run count and last update. Click a project to reopen it.
+- **Status:** connection and queue in the top bar; the GPU and a model readiness check (which of the required files are missing, and where they go) in the sidebar. Runs are blocked with a clear list when models are missing.
 
 - **Interface in 6 languages:** English, Español, 日本語, 한국어, 中文, हिन्दी. It starts in the browser's language and remembers your choice.
 - **Ad language:** follows the interface language unless you pick another. The planner writes the voiceover and captions in that language, and LTX-2.3 speaks it.

@@ -246,6 +246,7 @@ class OpenAdViralityJudge(io.ComfyNode):
                 io.Int.Input("frame_size", default=448, min=224, max=1024, step=32, tooltip="Longest side of the frames shown to the judge.", advanced=True),
                 io.Int.Input("seed", default=0, min=0, max=0xffffffffffffffff),
                 io.Int.Input("max_length", default=2048, min=256, max=8192, advanced=True),
+                io.String.Input("language", default="English", tooltip="Language for the strengths, fixes and verdict."),
             ],
             outputs=[
                 io.Float.Output(display_name="score"),
@@ -255,7 +256,7 @@ class OpenAdViralityJudge(io.ComfyNode):
         )
 
     @classmethod
-    def execute(cls, clip, video, project, save_feedback, frame_size, seed, max_length, storyboard=None) -> io.NodeOutput:
+    def execute(cls, clip, video, project, save_feedback, frame_size, seed, max_length, language="English", storyboard=None) -> io.NodeOutput:
         c = video.get_components()
         frames = c.images[..., :3]
         fps = float(c.frame_rate)
@@ -273,7 +274,7 @@ class OpenAdViralityJudge(io.ComfyNode):
         else:
             brief, n = "Not provided. Judge the ad on its own.", 5
 
-        prompt = judge.build_user_prompt(brief, n)
+        prompt = judge.build_user_prompt(brief, n, language)
         text = _generate(clip, prompt, judge.SYSTEM_PROMPT, seed, max_length, 0.3, video=frames, audio=c.audio)
         try:
             review = judge.parse_review(text)

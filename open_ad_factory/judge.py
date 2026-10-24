@@ -28,6 +28,7 @@ Score each criterion from 0 to 10 (10 = best in class, 5 = average ad, 0 = broke
 {rubric}
 
 Then list the most important fixes for the next cut. Each fix must name the shot (1-{n}) or "end card" and say concretely what to change.
+Write the strengths, fixes and verdict in {language}. Keep the JSON keys in English.
 
 Answer with ONE JSON object, no other text:
 {{
@@ -38,8 +39,9 @@ Answer with ONE JSON object, no other text:
 }}"""
 
 
-def build_user_prompt(brief, num_shots):
+def build_user_prompt(brief, num_shots, language="English"):
     return USER_TEMPLATE.format(
+        language=language.strip() or "English",
         brief=brief.strip(),
         rubric="\n".join(f"- {k}: {desc}" for k, (_, desc) in RUBRIC.items()),
         n=num_shots,

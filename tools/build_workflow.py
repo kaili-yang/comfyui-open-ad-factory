@@ -49,6 +49,22 @@ def load_template(name):
         return json.load(f)
 
 
+QWEN3VL = "qwen3vl_8b_int8_convrot.safetensors"
+PE_FILES = ("qwen3.5_9b_qwen_image_2.1_pe_t2i.int8_convrot.safetensors", "qwen3.5_9b_qwen_image_2.1_pe_i2i.int8_convrot.safetensors")
+
+
+def swap_pe_model(template):
+    """The Qwen prompt enhancer is off in our graphs. Point its slot at the Qwen3-VL-8B that Qwen-Image 2.1 already needs,
+    so validation does not demand the separate 9 GB Qwen3.5 PE checkpoints."""
+    for sg in template["definitions"]["subgraphs"]:
+        for n in sg["nodes"]:
+            if n["type"] == "CLIPLoader" and n["widgets_values"][0] in PE_FILES:
+                n["widgets_values"][:2] = [QWEN3VL, "stable_diffusion"]
+    for n in template["nodes"]:
+        n["widgets_values"] = [QWEN3VL if v in PE_FILES else v for v in n.get("widgets_values") or []]
+    return template
+
+
 def first(nodes, type_):
     return next(n for n in nodes if n["type"] == type_)
 
@@ -83,7 +99,8 @@ class Builder:
                 if is_widget:
                     entry["widget"] = {"name": name}
                     values.append(widgets.get(name, opts.get("default")))
-                    if opts.get("control_after_generate"):
+                    # The frontend adds a control widget to every seed input, declared or not
+                    if opts.get("control_after_generate") or (kind == "INT" and name in ("seed", "noise_seed")):
                         values.append("fixed")
                 inputs.append(entry)
         outputs = [{"name": n, "type": t, "links": []} for n, t in zip(info["output_name"], info["output"])]
@@ -130,7 +147,7 @@ SELF_AD = {
 
 def build(object_info, url=None, image=None, notes="", project="my_ad", style="ugc", audience="", workflow_id="6b1f3f0e-0a3c-4c62-9d1b-3a5e0adfac01"):
     ltx = load_template("video_ltx2_3_i2v")
-    qwen = load_template("image_qwen_image_2_1_image_edit")
+    qwen = swap_pe_model(load_template("image_qwen_image_2_1_image_edit"))
     gemma = load_template("llm_gemma4_text_gen")
     ltx_node = next(n for n in ltx["nodes"] if n["type"] == ltx["definitions"]["subgraphs"][0]["id"])
     qwen_node = next(n for n in qwen["nodes"] if n["type"] == qwen["definitions"]["subgraphs"][0]["id"])
@@ -174,6 +191,8 @@ def build(object_info, url=None, image=None, notes="", project="my_ad", style="u
         # Qwen-Image 2.1 decodes RGBA; LTX takes RGB only
         kf_rgb = b.pack_node("SplitImageWithAlpha", (1100, y + 440), {}, size=(260, 80), title=f"Shot {i + 1} keyframe RGB")
         b.link(kf, 0, kf_rgb, "image")
+        # The web app shows each first frame as soon as it exists
+        b.link(kf_rgb, 0, b.pack_node("PreviewImage", (1380, y + 440), {}, size=(200, 300), title=f"Shot {i + 1} preview"), "images")
 
         vid = b.copy_node(ltx_node, (1650, y), title=f"Shot {i + 1} video (LTX-2.3)")
         vid["widgets_values"][1:5] = [True, WIDTH, HEIGHT, SECONDS]  # prompt_enhance, width, height, duration

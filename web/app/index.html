@@ -3,104 +3,197 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
 <title>Open Ad Factory</title>
 <link rel="icon" href="static/logo.svg">
 <link rel="stylesheet" href="static/app.css">
 </head>
 <body>
-<header>
-  <div class="brand">
-    <img src="static/logo.svg" alt="">
-    <div>
-      <h1>OPEN AD FACTORY</h1>
-      <p data-i18n="tagline"></p>
-    </div>
-  </div>
-  <label class="lang">
-    <span data-i18n="uiLanguage"></span>
-    <select id="ui-lang"></select>
-  </label>
-</header>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4L21 8"/><path d="M21 3v5h-5"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 7.5h4M3 12h18M3 16.5h4M17 7.5h4M17 16.5h4"/></symbol>
+  </defs>
+</svg>
 
-<main>
-  <section class="card form">
-    <form id="form">
-      <label><span data-i18n="url"></span>
-        <input id="url" type="url" data-i18n-placeholder="urlPlaceholder" autocomplete="off"></label>
-      <label><span data-i18n="notes"></span>
-        <textarea id="notes" rows="2" data-i18n-placeholder="notesPlaceholder"></textarea></label>
-
-      <fieldset>
-        <legend data-i18n="style"></legend>
-        <div class="chips" id="styles"></div>
-      </fieldset>
-
-      <div class="row">
-        <label><span data-i18n="adLanguage"></span><select id="ad-lang"></select></label>
-        <label><span data-i18n="audience"></span><input id="audience" data-i18n-placeholder="audiencePlaceholder"></label>
+<div class="shell">
+  <aside class="sidebar">
+    <a class="brand" href="#/create">
+      <img src="static/logo.svg" alt="">
+      <span><b>OPEN AD FACTORY</b><small data-i18n="tagline"></small></span>
+    </a>
+    <nav>
+      <a href="#/create" data-route="create"><svg><use href="#i-plus"/></svg><span data-i18n="nav.create"></span></a>
+      <a href="#/projects" data-route="projects"><svg><use href="#i-grid"/></svg><span data-i18n="nav.projects"></span></a>
+      <a href="https://github.com/kaili-yang/comfyui-open-ad-factory#readme" target="_blank" rel="noopener"><svg><use href="#i-book"/></svg><span data-i18n="nav.docs"></span></a>
+    </nav>
+    <div class="side-bottom">
+      <div class="panel" id="models-panel">
+        <div class="panel-head"><svg><use href="#i-box"/></svg><span data-i18n="models.title"></span><span class="badge" id="models-badge"></span></div>
+        <p id="models-status" class="muted small"></p>
+        <div class="meter"><div id="models-meter"></div></div>
+        <details id="models-missing" hidden><summary class="small" data-i18n="models.help"></summary><ul id="models-list"></ul></details>
       </div>
-      <p class="note" id="hindi-note" data-i18n="hindiNote" hidden></p>
+      <div class="panel">
+        <div class="panel-head"><svg><use href="#i-cpu"/></svg><span data-i18n="device"></span></div>
+        <p class="small" id="device">–</p>
+      </div>
+      <label class="lang-select"><svg><use href="#i-globe"/></svg><select id="ui-lang" aria-label="Language"></select></label>
+      <p class="tiny muted" data-i18n="footer"></p>
+    </div>
+  </aside>
 
-      <div class="row">
-        <label><span data-i18n="project"></span><input id="project" value="my_ad" pattern="[A-Za-z0-9_\-]+">
-          <small data-i18n="projectHint"></small></label>
-        <label class="check"><input id="feedback" type="checkbox" checked><span data-i18n="useFeedback"></span></label>
+  <div class="main">
+    <header class="topbar">
+      <div>
+        <h1 id="page-title"></h1>
+        <p id="page-sub" class="muted"></p>
+      </div>
+      <div class="top-actions">
+        <span class="pill" id="queue-pill"></span>
+        <span class="pill" id="conn-pill"><i class="dot"></i><span id="conn-text"></span></span>
+        <a class="icon-btn" href="https://github.com/kaili-yang/comfyui-open-ad-factory" target="_blank" rel="noopener" aria-label="GitHub"><svg><use href="#i-github"/></svg></a>
+      </div>
+    </header>
+
+    <section class="view" id="view-create">
+      <div class="create-grid">
+        <form class="card composer" id="form" novalidate>
+          <div class="field">
+            <label for="url" data-i18n="url"></label>
+            <div class="url-row">
+              <svg><use href="#i-link"/></svg>
+              <input id="url" type="url" data-i18n-placeholder="urlPlaceholder" autocomplete="off" spellcheck="false">
+              <button type="button" class="btn secondary" id="fetch" data-i18n="fetch"></button>
+            </div>
+            <div class="product" id="product" data-state="empty">
+              <div class="product-empty muted small" data-i18n="productEmpty"></div>
+              <div class="product-loading"><div class="skel img"></div><div class="skel-lines"><div class="skel"></div><div class="skel short"></div><div class="skel"></div></div></div>
+              <div class="product-error small"><svg><use href="#i-alert"/></svg><span data-i18n="productError"></span></div>
+              <div class="product-body"><img id="product-img" alt=""><div><b id="product-name"></b><p class="muted small" id="product-meta"></p><p class="small clamp" id="product-desc"></p></div></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="label" data-i18n="section.direction"></span>
+            <div class="styles" id="styles" role="radiogroup"></div>
+          </div>
+
+          <div class="field two">
+            <div>
+              <label for="ad-lang"><span data-i18n="adLanguage"></span> <span class="muted" data-i18n="adLanguageHint"></span></label>
+              <select id="ad-lang"></select>
+            </div>
+            <div>
+              <span class="label" data-i18n="format"></span>
+              <div class="readonly"><svg><use href="#i-film"/></svg><span data-i18n="formatValue"></span></div>
+            </div>
+          </div>
+          <p class="note small" id="hindi-note" data-i18n="hindiNote" hidden></p>
+
+          <details class="advanced" id="advanced">
+            <summary><svg><use href="#i-chevron"/></svg><span data-i18n="section.advanced"></span></summary>
+            <div class="field"><label for="notes" data-i18n="notes"></label><textarea id="notes" rows="2" data-i18n-placeholder="notesPlaceholder"></textarea></div>
+            <div class="field two">
+              <div><label for="audience" data-i18n="audience"></label><input id="audience" data-i18n-placeholder="audiencePlaceholder"></div>
+              <div><label for="project" data-i18n="project"></label><input id="project" value="my_ad" pattern="[A-Za-z0-9_\-]+" spellcheck="false"><small class="muted" data-i18n="projectHint"></small></div>
+            </div>
+            <label class="switch"><input id="feedback" type="checkbox" checked><i></i><span data-i18n="useFeedback"></span></label>
+          </details>
+
+          <div class="composer-foot">
+            <button type="submit" class="btn primary" id="generate"><svg><use href="#i-sparkles"/></svg><span data-i18n="generate"></span><kbd>⌘ ↵</kbd></button>
+            <button type="button" class="btn secondary" id="stop" hidden><svg><use href="#i-stop"/></svg><span data-i18n="stop"></span></button>
+            <span class="muted small" data-i18n="runsLocally"></span>
+          </div>
+          <div class="error" id="error" hidden><svg><use href="#i-alert"/></svg><div><b data-i18n="errorTitle"></b><pre id="error-text"></pre></div></div>
+        </form>
+
+        <div class="card studio">
+          <div class="studio-head">
+            <span class="label" data-i18n="studio.title"></span>
+            <span class="badge" id="studio-badge"></span>
+            <span class="muted small tabnum" id="elapsed"></span>
+          </div>
+          <div class="phone">
+            <video id="video" controls playsinline hidden></video>
+            <div class="phone-idle" id="phone-idle"><img src="static/logo.svg" alt=""><p class="muted" data-i18n="preview"></p></div>
+            <div class="phone-live" id="phone-live" hidden><div class="ring"></div><p id="stage"></p></div>
+          </div>
+          <ol class="steps" id="steps"></ol>
+          <div class="shots" id="shots"></div>
+          <div class="studio-actions">
+            <a class="btn secondary" id="download" download hidden><svg><use href="#i-download"/></svg><span data-i18n="download"></span></a>
+          </div>
+        </div>
       </div>
 
-      <div class="actions">
-        <button type="submit" id="generate" class="primary" data-i18n="generate"></button>
-        <button type="button" id="stop" class="ghost" data-i18n="stop" hidden></button>
-        <span class="meta" data-i18n="shots"></span>
-      </div>
-    </form>
+      <section class="card results" id="results">
+        <div class="tabs" role="tablist">
+          <button type="button" role="tab" data-tab="overview" aria-selected="true" data-i18n="tab.overview"></button>
+          <button type="button" role="tab" data-tab="storyboard" data-i18n="tab.storyboard"></button>
+          <button type="button" role="tab" data-tab="post" data-i18n="tab.post"></button>
+          <button type="button" role="tab" data-tab="history" data-i18n="tab.history"></button>
+        </div>
+        <p class="muted empty" id="results-empty" data-i18n="noResults"></p>
+        <div class="tab-panel" data-panel="overview">
+          <div class="overview">
+            <div class="score-card">
+              <svg class="gauge" viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" class="track"/><circle cx="60" cy="60" r="52" class="value" id="gauge"/></svg>
+              <div class="score-num"><strong class="tabnum" id="score">–</strong><small>/ 100</small></div>
+              <span class="muted small" data-i18n="score"></span>
+              <span class="grade" id="grade"></span>
+            </div>
+            <div class="criteria" id="criteria"></div>
+            <div class="notes-col">
+              <p class="verdict" id="verdict"></p>
+              <h4 data-i18n="strengths"></h4><ul class="list good" id="strengths"></ul>
+              <h4 data-i18n="fixes"></h4><ol class="list fix" id="fixes"></ol>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="storyboard" hidden><div class="board" id="board"></div></div>
+        <div class="tab-panel" data-panel="post" hidden>
+          <div class="post-card">
+            <p id="post-text"></p>
+            <div class="tags" id="post-tags"></div>
+            <button type="button" class="btn secondary" id="copy"><svg><use href="#i-copy"/></svg><span data-i18n="copy"></span></button>
+          </div>
+        </div>
+        <div class="tab-panel" data-panel="history" hidden>
+          <svg class="chart" id="chart" viewBox="0 0 600 160" preserveAspectRatio="none"></svg>
+          <p class="muted small" id="history-empty" data-i18n="noHistory"></p>
+        </div>
+      </section>
+    </section>
 
-    <div id="progress" class="progress" hidden>
-      <h3 data-i18n="progress"></h3>
-      <div class="bar"><div id="bar"></div></div>
-      <p id="stage" class="stage"></p>
-      <ol id="stages"></ol>
-    </div>
-
-    <div id="error" class="error" hidden>
-      <h3 data-i18n="errorTitle"></h3>
-      <pre id="error-text"></pre>
-    </div>
-  </section>
-
-  <section class="card preview">
-    <div class="phone">
-      <video id="video" controls playsinline hidden></video>
-      <div id="placeholder" class="placeholder">
+    <section class="view" id="view-projects" hidden>
+      <div class="projects" id="projects"></div>
+      <div class="empty-state" id="projects-empty" hidden>
         <img src="static/logo.svg" alt="">
-        <p data-i18n="preview"></p>
+        <p class="muted" data-i18n="projects.empty"></p>
+        <a class="btn primary" href="#/create"><svg><use href="#i-plus"/></svg><span data-i18n="projects.new"></span></a>
       </div>
-    </div>
-    <a id="download" class="ghost button" download hidden data-i18n="download"></a>
-  </section>
+    </section>
+  </div>
+</div>
 
-  <section class="card results" id="results" hidden>
-    <div class="score">
-      <span data-i18n="score"></span>
-      <strong id="score">–</strong>
-      <small>/ 100</small>
-    </div>
-    <div class="history">
-      <h3 data-i18n="history"></h3>
-      <svg id="chart" viewBox="0 0 300 90" preserveAspectRatio="none"></svg>
-      <p id="history-empty" class="meta" data-i18n="noHistory"></p>
-    </div>
-    <details open><summary data-i18n="report"></summary><pre id="report"></pre></details>
-    <details><summary data-i18n="storyboard"></summary><pre id="storyboard"></pre></details>
-    <details open><summary data-i18n="post"></summary><pre id="post"></pre>
-      <button type="button" class="ghost" id="copy" data-i18n="copy"></button></details>
-  </section>
-</main>
-
-<footer>
-  <span data-i18n="footer"></span>
-  <a href="https://github.com/kaili-yang/comfyui-open-ad-factory" target="_blank" rel="noopener">GitHub</a>
-</footer>
-
+<div class="toasts" id="toasts" aria-live="polite"></div>
 <script type="module" src="static/app.js"></script>
 </body>
 </html>
