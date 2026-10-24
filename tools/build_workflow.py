@@ -78,7 +78,7 @@ class Builder:
                 spec = info["input"][section][name]
                 kind, opts = spec[0], spec[1] if len(spec) > 1 else {}
                 kind = "COMBO" if isinstance(kind, list) else kind
-                is_widget = kind in ("INT", "FLOAT", "STRING", "BOOLEAN", "COMBO") and not opts.get("forceInput")
+                is_widget = kind in ("INT", "FLOAT", "STRING", "BOOLEAN", "COMBO", "COLOR") and not opts.get("forceInput")
                 entry = {"name": name, "type": kind, "link": None}
                 if is_widget:
                     entry["widget"] = {"name": name}
