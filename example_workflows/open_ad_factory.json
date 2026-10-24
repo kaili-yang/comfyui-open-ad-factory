@@ -222,7 +222,7 @@
         "Node name for S&R": "OpenAdProductPage"
       },
       "widgets_values": [
-        "https://www.allbirds.com/products/mens-tree-runners",
+        "https://kaili-yang.github.io/comfyui-open-ad-factory/demo-store/veyrin-glide-legging/",
         0,
         768,
         1344,
@@ -230,7 +230,7 @@
         ""
       ],
       "widgets_values_named": {
-        "url": "https://www.allbirds.com/products/mens-tree-runners",
+        "url": "https://kaili-yang.github.io/comfyui-open-ad-factory/demo-store/veyrin-glide-legging/",
         "image_index": 0,
         "width": 768,
         "height": 1344,
