@@ -126,8 +126,11 @@ def build(info):
     hero["widgets_values"][0] = HERO_PROMPT
     hero["widgets_values"][7:9] = [768, 1344]
     hero["widgets_values"][11] = 920
+    # Qwen-Image 2.1 decodes RGBA; keep RGB only
+    hero_rgb = b.pack_node("SplitImageWithAlpha", (-500, 330), {}, size=(260, 80), title="Product photo RGB")
+    b.link(hero, 0, hero_rgb, "image")
     hero_preview = b.pack_node("PreviewImage", (-500, 450), {}, size=(300, 480), title="Product photo")
-    b.link(hero, 0, hero_preview, "images")
+    b.link(hero_rgb, 0, hero_preview, "images")
 
     concat = b.add({"type": "ConcatenateVideo", "pos": [3000, -300], "size": [320, 200],
                     "inputs": [{"name": f"videos.video{i}", "type": "VIDEO", "link": None} for i in range(len(SHOTS))]
@@ -148,17 +151,19 @@ def build(info):
         kf["widgets_values"][1] = shot["keyframe"]
         kf["widgets_values"][13] = 930 + i
         if shot["refs"] == "hero":
-            b.link(hero, 0, kf, "images.image_1")
+            b.link(hero_rgb, 0, kf, "images.image_1")
         else:
             b.link(keyframes[0], 0, kf, "images.image_1")
-            b.link(hero, 0, kf, "images.image_2")
-        keyframes.append(kf)
+            b.link(hero_rgb, 0, kf, "images.image_2")
+        kf_rgb = b.pack_node("SplitImageWithAlpha", (0, y + 470), {}, size=(260, 80), title=f"Shot {i + 1} keyframe RGB")
+        b.link(kf, 0, kf_rgb, "image")
+        keyframes.append(kf_rgb)
 
         vid = b.copy_node(sub(ltx), (550, y), title=f"Shot {i + 1} video (LTX-2.3)")
         vid["widgets_values"][0] = shot["motion"]
         vid["widgets_values"][1:5] = [True, WIDTH, HEIGHT, SECONDS]
         vid["widgets_values"][6] = 940 + i
-        b.link(kf, 0, vid, "input")
+        b.link(kf_rgb, 0, vid, "input")
 
         parts = b.pack_node("GetVideoComponents", (1100, y), {}, size=(260, 160))
         b.link(vid, 0, parts, "video")

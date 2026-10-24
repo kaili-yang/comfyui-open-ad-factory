@@ -209,11 +209,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            1,
-            2,
-            15,
-            27,
-            40
+            1
           ]
         }
       ],
@@ -264,6 +260,53 @@
     },
     {
       "id": 3,
+      "type": "SplitImageWithAlpha",
+      "pos": [
+        -500,
+        330
+      ],
+      "size": [
+        260,
+        80
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2,
+            3,
+            17,
+            30,
+            44
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "title": "Product photo RGB",
+      "properties": {
+        "Node name for S&R": "SplitImageWithAlpha"
+      }
+    },
+    {
+      "id": 4,
       "type": "PreviewImage",
       "pos": [
         -500,
@@ -274,14 +317,14 @@
         480
       ],
       "flags": {},
-      "order": 3,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "images",
           "name": "images",
           "type": "IMAGE",
-          "link": 1
+          "link": 2
         }
       ],
       "outputs": [
@@ -298,7 +341,7 @@
       }
     },
     {
-      "id": 4,
+      "id": 5,
       "type": "ConcatenateVideo",
       "pos": [
         3000,
@@ -309,35 +352,35 @@
         200
       ],
       "flags": {},
-      "order": 34,
+      "order": 39,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "video0",
           "name": "videos.video0",
           "type": "VIDEO",
-          "link": 9
+          "link": 11
         },
         {
           "localized_name": "video1",
           "name": "videos.video1",
           "shape": 7,
           "type": "VIDEO",
-          "link": 22
+          "link": 25
         },
         {
           "localized_name": "video2",
           "name": "videos.video2",
           "shape": 7,
           "type": "VIDEO",
-          "link": 34
+          "link": 38
         },
         {
           "localized_name": "video3",
           "name": "videos.video3",
           "shape": 7,
           "type": "VIDEO",
-          "link": 47
+          "link": 52
         },
         {
           "localized_name": "complete_audio",
@@ -369,7 +412,7 @@
           "name": "VIDEO",
           "type": "VIDEO",
           "links": [
-            52
+            57
           ]
         }
       ],
@@ -384,7 +427,7 @@
       }
     },
     {
-      "id": 5,
+      "id": 6,
       "type": "BatchImagesNode",
       "pos": [
         2300,
@@ -395,63 +438,63 @@
         300
       ],
       "flags": {},
-      "order": 35,
+      "order": 40,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "image0",
           "name": "images.image0",
           "type": "IMAGE",
-          "link": 11
+          "link": 13
         },
         {
           "localized_name": "image1",
           "name": "images.image1",
           "shape": 7,
           "type": "IMAGE",
-          "link": 13
+          "link": 15
         },
         {
           "localized_name": "image2",
           "name": "images.image2",
           "shape": 7,
           "type": "IMAGE",
-          "link": 24
+          "link": 27
         },
         {
           "localized_name": "image3",
           "name": "images.image3",
           "shape": 7,
           "type": "IMAGE",
-          "link": 26
+          "link": 29
         },
         {
           "localized_name": "image4",
           "name": "images.image4",
           "shape": 7,
           "type": "IMAGE",
-          "link": 36
+          "link": 40
         },
         {
           "localized_name": "image5",
           "name": "images.image5",
           "shape": 7,
           "type": "IMAGE",
-          "link": 38
+          "link": 42
         },
         {
           "localized_name": "image6",
           "name": "images.image6",
           "shape": 7,
           "type": "IMAGE",
-          "link": 49
+          "link": 54
         },
         {
           "localized_name": "image7",
           "name": "images.image7",
           "shape": 7,
           "type": "IMAGE",
-          "link": 51
+          "link": 56
         },
         {
           "localized_name": "image8",
@@ -467,7 +510,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            53
+            58
           ]
         }
       ],
@@ -476,7 +519,7 @@
       }
     },
     {
-      "id": 6,
+      "id": 7,
       "type": "bc1c967a-7f6a-4be9-a372-dad16e4f28e3",
       "pos": [
         0,
@@ -487,7 +530,7 @@
         760
       ],
       "flags": {},
-      "order": 4,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -667,7 +710,7 @@
           "label": "image_1",
           "name": "images.image_1",
           "type": "IMAGE",
-          "link": 2
+          "link": 3
         },
         {
           "label": "image_2",
@@ -739,9 +782,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            3,
-            14,
-            39
+            4
           ]
         }
       ],
@@ -795,7 +836,52 @@
       }
     },
     {
-      "id": 7,
+      "id": 8,
+      "type": "SplitImageWithAlpha",
+      "pos": [
+        0,
+        170
+      ],
+      "size": [
+        260,
+        80
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            5,
+            16,
+            43
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "title": "Shot 1 keyframe RGB",
+      "properties": {
+        "Node name for S&R": "SplitImageWithAlpha"
+      }
+    },
+    {
+      "id": 9,
       "type": "2454ad83-157c-40dd-9f19-5daaf4041ce0",
       "pos": [
         550,
@@ -806,7 +892,7 @@
         650
       ],
       "flags": {},
-      "order": 7,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
@@ -814,7 +900,7 @@
           "localized_name": "input",
           "name": "input",
           "type": "IMAGE,MASK",
-          "link": 3
+          "link": 5
         },
         {
           "label": "prompt",
@@ -930,7 +1016,7 @@
           "name": "VIDEO",
           "type": "VIDEO",
           "links": [
-            4
+            6
           ]
         }
       ],
@@ -990,7 +1076,7 @@
       }
     },
     {
-      "id": 8,
+      "id": 10,
       "type": "GetVideoComponents",
       "pos": [
         1100,
@@ -1001,14 +1087,14 @@
         160
       ],
       "flags": {},
-      "order": 12,
+      "order": 15,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "video",
           "name": "video",
           "type": "VIDEO",
-          "link": 4
+          "link": 6
         }
       ],
       "outputs": [
@@ -1017,7 +1103,7 @@
           "name": "images",
           "type": "IMAGE",
           "links": [
-            5
+            7
           ]
         },
         {
@@ -1025,7 +1111,7 @@
           "name": "audio",
           "type": "AUDIO",
           "links": [
-            8
+            10
           ]
         },
         {
@@ -1033,7 +1119,7 @@
           "name": "fps",
           "type": "FLOAT",
           "links": [
-            7
+            9
           ]
         },
         {
@@ -1054,7 +1140,7 @@
       }
     },
     {
-      "id": 9,
+      "id": 11,
       "type": "TextOverlay",
       "pos": [
         1420,
@@ -1065,14 +1151,14 @@
         260
       ],
       "flags": {},
-      "order": 16,
+      "order": 19,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "images",
           "name": "images",
           "type": "IMAGE",
-          "link": 5
+          "link": 7
         },
         {
           "localized_name": "text",
@@ -1135,9 +1221,9 @@
           "name": "images",
           "type": "IMAGE",
           "links": [
-            6,
-            10,
-            12
+            8,
+            12,
+            14
           ]
         }
       ],
@@ -1163,7 +1249,7 @@
       }
     },
     {
-      "id": 10,
+      "id": 12,
       "type": "CreateVideo",
       "pos": [
         1800,
@@ -1174,21 +1260,21 @@
         160
       ],
       "flags": {},
-      "order": 20,
+      "order": 23,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "images",
           "name": "images",
           "type": "IMAGE",
-          "link": 6
+          "link": 8
         },
         {
           "localized_name": "audio",
           "name": "audio",
           "shape": 7,
           "type": "AUDIO",
-          "link": 8
+          "link": 10
         },
         {
           "localized_name": "fps",
@@ -1197,7 +1283,7 @@
           "widget": {
             "name": "fps"
           },
-          "link": 7
+          "link": 9
         },
         {
           "localized_name": "bit_depth",
@@ -1236,7 +1322,7 @@
           "name": "VIDEO",
           "type": "VIDEO",
           "links": [
-            9
+            11
           ]
         }
       ],
@@ -1257,7 +1343,7 @@
       }
     },
     {
-      "id": 11,
+      "id": 13,
       "type": "ImageFromBatch",
       "pos": [
         1800,
@@ -1268,70 +1354,7 @@
         130
       ],
       "flags": {},
-      "order": 21,
-      "mode": 0,
-      "inputs": [
-        {
-          "localized_name": "image",
-          "name": "image",
-          "type": "IMAGE",
-          "link": 10
-        },
-        {
-          "localized_name": "batch_index",
-          "name": "batch_index",
-          "type": "INT",
-          "widget": {
-            "name": "batch_index"
-          },
-          "link": null
-        },
-        {
-          "localized_name": "length",
-          "name": "length",
-          "type": "INT",
-          "widget": {
-            "name": "length"
-          },
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "localized_name": "IMAGE",
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            11
-          ]
-        }
-      ],
-      "title": "Shot 1 frame @12",
-      "properties": {
-        "Node name for S&R": "ImageFromBatch"
-      },
-      "widgets_values": [
-        12,
-        1
-      ],
-      "widgets_values_named": {
-        "batch_index": 12,
-        "length": 1
-      }
-    },
-    {
-      "id": 12,
-      "type": "ImageFromBatch",
-      "pos": [
-        2080,
-        -80
-      ],
-      "size": [
-        260,
-        130
-      ],
-      "flags": {},
-      "order": 22,
+      "order": 24,
       "mode": 0,
       "inputs": [
         {
@@ -1369,6 +1392,69 @@
           ]
         }
       ],
+      "title": "Shot 1 frame @12",
+      "properties": {
+        "Node name for S&R": "ImageFromBatch"
+      },
+      "widgets_values": [
+        12,
+        1
+      ],
+      "widgets_values_named": {
+        "batch_index": 12,
+        "length": 1
+      }
+    },
+    {
+      "id": 14,
+      "type": "ImageFromBatch",
+      "pos": [
+        2080,
+        -80
+      ],
+      "size": [
+        260,
+        130
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 14
+        },
+        {
+          "localized_name": "batch_index",
+          "name": "batch_index",
+          "type": "INT",
+          "widget": {
+            "name": "batch_index"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "length",
+          "name": "length",
+          "type": "INT",
+          "widget": {
+            "name": "length"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            15
+          ]
+        }
+      ],
       "title": "Shot 1 frame @90",
       "properties": {
         "Node name for S&R": "ImageFromBatch"
@@ -1383,7 +1469,7 @@
       }
     },
     {
-      "id": 13,
+      "id": 15,
       "type": "bc1c967a-7f6a-4be9-a372-dad16e4f28e3",
       "pos": [
         0,
@@ -1394,7 +1480,7 @@
         760
       ],
       "flags": {},
-      "order": 8,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
@@ -1574,14 +1660,14 @@
           "label": "image_1",
           "name": "images.image_1",
           "type": "IMAGE",
-          "link": 14
+          "link": 16
         },
         {
           "label": "image_2",
           "name": "images.image_2",
           "shape": 7,
           "type": "IMAGE",
-          "link": 15
+          "link": 17
         },
         {
           "label": "image_3",
@@ -1646,7 +1732,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            16
+            18
           ]
         }
       ],
@@ -1700,7 +1786,50 @@
       }
     },
     {
-      "id": 14,
+      "id": 16,
+      "type": "SplitImageWithAlpha",
+      "pos": [
+        0,
+        730
+      ],
+      "size": [
+        260,
+        80
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            19
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "title": "Shot 2 keyframe RGB",
+      "properties": {
+        "Node name for S&R": "SplitImageWithAlpha"
+      }
+    },
+    {
+      "id": 17,
       "type": "2454ad83-157c-40dd-9f19-5daaf4041ce0",
       "pos": [
         550,
@@ -1711,7 +1840,7 @@
         650
       ],
       "flags": {},
-      "order": 13,
+      "order": 20,
       "mode": 0,
       "inputs": [
         {
@@ -1719,7 +1848,7 @@
           "localized_name": "input",
           "name": "input",
           "type": "IMAGE,MASK",
-          "link": 16
+          "link": 19
         },
         {
           "label": "prompt",
@@ -1835,7 +1964,7 @@
           "name": "VIDEO",
           "type": "VIDEO",
           "links": [
-            17
+            20
           ]
         }
       ],
@@ -1895,7 +2024,7 @@
       }
     },
     {
-      "id": 15,
+      "id": 18,
       "type": "GetVideoComponents",
       "pos": [
         1100,
@@ -1906,14 +2035,14 @@
         160
       ],
       "flags": {},
-      "order": 17,
+      "order": 26,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "video",
           "name": "video",
           "type": "VIDEO",
-          "link": 17
+          "link": 20
         }
       ],
       "outputs": [
@@ -1922,7 +2051,7 @@
           "name": "images",
           "type": "IMAGE",
           "links": [
-            18
+            21
           ]
         },
         {
@@ -1930,7 +2059,7 @@
           "name": "audio",
           "type": "AUDIO",
           "links": [
-            21
+            24
           ]
         },
         {
@@ -1938,7 +2067,7 @@
           "name": "fps",
           "type": "FLOAT",
           "links": [
-            20
+            23
           ]
         },
         {
@@ -1959,7 +2088,7 @@
       }
     },
     {
-      "id": 16,
+      "id": 19,
       "type": "TextOverlay",
       "pos": [
         1420,
@@ -1970,14 +2099,14 @@
         260
       ],
       "flags": {},
-      "order": 23,
+      "order": 31,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "images",
           "name": "images",
           "type": "IMAGE",
-          "link": 18
+          "link": 21
         },
         {
           "localized_name": "text",
@@ -2040,9 +2169,9 @@
           "name": "images",
           "type": "IMAGE",
           "links": [
-            19,
-            23,
-            25
+            22,
+            26,
+            28
           ]
         }
       ],
@@ -2068,7 +2197,7 @@
       }
     },
     {
-      "id": 17,
+      "id": 20,
       "type": "CreateVideo",
       "pos": [
         1800,
@@ -2079,21 +2208,21 @@
         160
       ],
       "flags": {},
-      "order": 28,
+      "order": 33,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "images",
           "name": "images",
           "type": "IMAGE",
-          "link": 19
+          "link": 22
         },
         {
           "localized_name": "audio",
           "name": "audio",
           "shape": 7,
           "type": "AUDIO",
-          "link": 21
+          "link": 24
         },
         {
           "localized_name": "fps",
@@ -2102,7 +2231,7 @@
           "widget": {
             "name": "fps"
           },
-          "link": 20
+          "link": 23
         },
         {
           "localized_name": "bit_depth",
@@ -2141,7 +2270,7 @@
           "name": "VIDEO",
           "type": "VIDEO",
           "links": [
-            22
+            25
           ]
         }
       ],
@@ -2162,7 +2291,7 @@
       }
     },
     {
-      "id": 18,
+      "id": 21,
       "type": "ImageFromBatch",
       "pos": [
         1800,
@@ -2173,14 +2302,14 @@
         130
       ],
       "flags": {},
-      "order": 29,
+      "order": 34,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "image",
           "name": "image",
           "type": "IMAGE",
-          "link": 23
+          "link": 26
         },
         {
           "localized_name": "batch_index",
@@ -2207,7 +2336,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            24
+            27
           ]
         }
       ],
@@ -2225,7 +2354,7 @@
       }
     },
     {
-      "id": 19,
+      "id": 22,
       "type": "ImageFromBatch",
       "pos": [
         2080,
@@ -2236,14 +2365,14 @@
         130
       ],
       "flags": {},
-      "order": 30,
+      "order": 35,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "image",
           "name": "image",
           "type": "IMAGE",
-          "link": 25
+          "link": 28
         },
         {
           "localized_name": "batch_index",
@@ -2270,7 +2399,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            26
+            29
           ]
         }
       ],
@@ -2288,7 +2417,7 @@
       }
     },
     {
-      "id": 20,
+      "id": 23,
       "type": "bc1c967a-7f6a-4be9-a372-dad16e4f28e3",
       "pos": [
         0,
@@ -2299,7 +2428,7 @@
         760
       ],
       "flags": {},
-      "order": 5,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -2479,7 +2608,7 @@
           "label": "image_1",
           "name": "images.image_1",
           "type": "IMAGE",
-          "link": 27
+          "link": 30
         },
         {
           "label": "image_2",
@@ -2551,7 +2680,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            28
+            31
           ]
         }
       ],
@@ -2605,7 +2734,50 @@
       }
     },
     {
-      "id": 21,
+      "id": 24,
+      "type": "SplitImageWithAlpha",
+      "pos": [
+        0,
+        1290
+      ],
+      "size": [
+        260,
+        80
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 31
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            32
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "title": "Shot 3 keyframe RGB",
+      "properties": {
+        "Node name for S&R": "SplitImageWithAlpha"
+      }
+    },
+    {
+      "id": 25,
       "type": "2454ad83-157c-40dd-9f19-5daaf4041ce0",
       "pos": [
         550,
@@ -2616,7 +2788,7 @@
         650
       ],
       "flags": {},
-      "order": 10,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {
@@ -2624,7 +2796,7 @@
           "localized_name": "input",
           "name": "input",
           "type": "IMAGE,MASK",
-          "link": 28
+          "link": 32
         },
         {
           "label": "prompt",
@@ -2740,7 +2912,7 @@
           "name": "VIDEO",
           "type": "VIDEO",
           "links": [
-            29
+            33
           ]
         }
       ],
@@ -2800,7 +2972,7 @@
       }
     },
     {
-      "id": 22,
+      "id": 26,
       "type": "GetVideoComponents",
       "pos": [
         1100,
@@ -2811,14 +2983,14 @@
         160
       ],
       "flags": {},
-      "order": 15,
+      "order": 18,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "video",
           "name": "video",
           "type": "VIDEO",
-          "link": 29
+          "link": 33
         }
       ],
       "outputs": [
@@ -2827,7 +2999,7 @@
           "name": "images",
           "type": "IMAGE",
           "links": [
-            30
+            34
           ]
         },
         {
@@ -2835,7 +3007,7 @@
           "name": "audio",
           "type": "AUDIO",
           "links": [
-            33
+            37
           ]
         },
         {
@@ -2843,7 +3015,7 @@
           "name": "fps",
           "type": "FLOAT",
           "links": [
-            32
+            36
           ]
         },
         {
@@ -2864,7 +3036,7 @@
       }
     },
     {
-      "id": 23,
+      "id": 27,
       "type": "TextOverlay",
       "pos": [
         1420,
@@ -2875,14 +3047,14 @@
         260
       ],
       "flags": {},
-      "order": 19,
+      "order": 22,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "images",
           "name": "images",
           "type": "IMAGE",
-          "link": 30
+          "link": 34
         },
         {
           "localized_name": "text",
@@ -2945,9 +3117,9 @@
           "name": "images",
           "type": "IMAGE",
           "links": [
-            31,
             35,
-            37
+            39,
+            41
           ]
         }
       ],
@@ -2973,7 +3145,7 @@
       }
     },
     {
-      "id": 24,
+      "id": 28,
       "type": "CreateVideo",
       "pos": [
         1800,
@@ -2984,21 +3156,21 @@
         160
       ],
       "flags": {},
-      "order": 25,
+      "order": 28,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "images",
           "name": "images",
           "type": "IMAGE",
-          "link": 31
+          "link": 35
         },
         {
           "localized_name": "audio",
           "name": "audio",
           "shape": 7,
           "type": "AUDIO",
-          "link": 33
+          "link": 37
         },
         {
           "localized_name": "fps",
@@ -3007,7 +3179,7 @@
           "widget": {
             "name": "fps"
           },
-          "link": 32
+          "link": 36
         },
         {
           "localized_name": "bit_depth",
@@ -3046,7 +3218,7 @@
           "name": "VIDEO",
           "type": "VIDEO",
           "links": [
-            34
+            38
           ]
         }
       ],
@@ -3067,7 +3239,7 @@
       }
     },
     {
-      "id": 25,
+      "id": 29,
       "type": "ImageFromBatch",
       "pos": [
         1800,
@@ -3078,14 +3250,14 @@
         130
       ],
       "flags": {},
-      "order": 26,
+      "order": 29,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "image",
           "name": "image",
           "type": "IMAGE",
-          "link": 35
+          "link": 39
         },
         {
           "localized_name": "batch_index",
@@ -3112,7 +3284,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            36
+            40
           ]
         }
       ],
@@ -3130,7 +3302,7 @@
       }
     },
     {
-      "id": 26,
+      "id": 30,
       "type": "ImageFromBatch",
       "pos": [
         2080,
@@ -3141,14 +3313,14 @@
         130
       ],
       "flags": {},
-      "order": 27,
+      "order": 30,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "image",
           "name": "image",
           "type": "IMAGE",
-          "link": 37
+          "link": 41
         },
         {
           "localized_name": "batch_index",
@@ -3175,7 +3347,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            38
+            42
           ]
         }
       ],
@@ -3193,7 +3365,7 @@
       }
     },
     {
-      "id": 27,
+      "id": 31,
       "type": "bc1c967a-7f6a-4be9-a372-dad16e4f28e3",
       "pos": [
         0,
@@ -3204,7 +3376,7 @@
         760
       ],
       "flags": {},
-      "order": 9,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
@@ -3384,14 +3556,14 @@
           "label": "image_1",
           "name": "images.image_1",
           "type": "IMAGE",
-          "link": 39
+          "link": 43
         },
         {
           "label": "image_2",
           "name": "images.image_2",
           "shape": 7,
           "type": "IMAGE",
-          "link": 40
+          "link": 44
         },
         {
           "label": "image_3",
@@ -3456,7 +3628,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            41
+            45
           ]
         }
       ],
@@ -3510,7 +3682,50 @@
       }
     },
     {
-      "id": 28,
+      "id": 32,
+      "type": "SplitImageWithAlpha",
+      "pos": [
+        0,
+        1850
+      ],
+      "size": [
+        260,
+        80
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 45
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            46
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "title": "Shot 4 keyframe RGB",
+      "properties": {
+        "Node name for S&R": "SplitImageWithAlpha"
+      }
+    },
+    {
+      "id": 33,
       "type": "2454ad83-157c-40dd-9f19-5daaf4041ce0",
       "pos": [
         550,
@@ -3521,7 +3736,7 @@
         650
       ],
       "flags": {},
-      "order": 14,
+      "order": 21,
       "mode": 0,
       "inputs": [
         {
@@ -3529,7 +3744,7 @@
           "localized_name": "input",
           "name": "input",
           "type": "IMAGE,MASK",
-          "link": 41
+          "link": 46
         },
         {
           "label": "prompt",
@@ -3645,7 +3860,7 @@
           "name": "VIDEO",
           "type": "VIDEO",
           "links": [
-            42
+            47
           ]
         }
       ],
@@ -3705,7 +3920,7 @@
       }
     },
     {
-      "id": 29,
+      "id": 34,
       "type": "GetVideoComponents",
       "pos": [
         1100,
@@ -3716,14 +3931,14 @@
         160
       ],
       "flags": {},
-      "order": 18,
+      "order": 27,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "video",
           "name": "video",
           "type": "VIDEO",
-          "link": 42
+          "link": 47
         }
       ],
       "outputs": [
@@ -3732,7 +3947,7 @@
           "name": "images",
           "type": "IMAGE",
           "links": [
-            43
+            48
           ]
         },
         {
@@ -3740,7 +3955,7 @@
           "name": "audio",
           "type": "AUDIO",
           "links": [
-            46
+            51
           ]
         },
         {
@@ -3748,7 +3963,7 @@
           "name": "fps",
           "type": "FLOAT",
           "links": [
-            45
+            50
           ]
         },
         {
@@ -3769,7 +3984,7 @@
       }
     },
     {
-      "id": 30,
+      "id": 35,
       "type": "TextOverlay",
       "pos": [
         1420,
@@ -3780,14 +3995,14 @@
         260
       ],
       "flags": {},
-      "order": 24,
+      "order": 32,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "images",
           "name": "images",
           "type": "IMAGE",
-          "link": 43
+          "link": 48
         },
         {
           "localized_name": "text",
@@ -3850,9 +4065,9 @@
           "name": "images",
           "type": "IMAGE",
           "links": [
-            44,
-            48,
-            50
+            49,
+            53,
+            55
           ]
         }
       ],
@@ -3878,7 +4093,7 @@
       }
     },
     {
-      "id": 31,
+      "id": 36,
       "type": "CreateVideo",
       "pos": [
         1800,
@@ -3889,21 +4104,21 @@
         160
       ],
       "flags": {},
-      "order": 31,
+      "order": 36,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "images",
           "name": "images",
           "type": "IMAGE",
-          "link": 44
+          "link": 49
         },
         {
           "localized_name": "audio",
           "name": "audio",
           "shape": 7,
           "type": "AUDIO",
-          "link": 46
+          "link": 51
         },
         {
           "localized_name": "fps",
@@ -3912,7 +4127,7 @@
           "widget": {
             "name": "fps"
           },
-          "link": 45
+          "link": 50
         },
         {
           "localized_name": "bit_depth",
@@ -3951,7 +4166,7 @@
           "name": "VIDEO",
           "type": "VIDEO",
           "links": [
-            47
+            52
           ]
         }
       ],
@@ -3972,7 +4187,7 @@
       }
     },
     {
-      "id": 32,
+      "id": 37,
       "type": "ImageFromBatch",
       "pos": [
         1800,
@@ -3983,14 +4198,14 @@
         130
       ],
       "flags": {},
-      "order": 32,
+      "order": 37,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "image",
           "name": "image",
           "type": "IMAGE",
-          "link": 48
+          "link": 53
         },
         {
           "localized_name": "batch_index",
@@ -4017,7 +4232,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            49
+            54
           ]
         }
       ],
@@ -4035,7 +4250,7 @@
       }
     },
     {
-      "id": 33,
+      "id": 38,
       "type": "ImageFromBatch",
       "pos": [
         2080,
@@ -4046,14 +4261,14 @@
         130
       ],
       "flags": {},
-      "order": 33,
+      "order": 38,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "image",
           "name": "image",
           "type": "IMAGE",
-          "link": 50
+          "link": 55
         },
         {
           "localized_name": "batch_index",
@@ -4080,7 +4295,7 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            51
+            56
           ]
         }
       ],
@@ -4098,7 +4313,7 @@
       }
     },
     {
-      "id": 34,
+      "id": 39,
       "type": "SaveVideo",
       "pos": [
         3400,
@@ -4109,14 +4324,14 @@
         760
       ],
       "flags": {},
-      "order": 36,
+      "order": 41,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "video",
           "name": "video",
           "type": "VIDEO",
-          "link": 52
+          "link": 57
         },
         {
           "localized_name": "filename_prefix",
@@ -4181,7 +4396,7 @@
       }
     },
     {
-      "id": 35,
+      "id": 40,
       "type": "CLIPLoader",
       "pos": [
         3000,
@@ -4231,8 +4446,8 @@
           "name": "CLIP",
           "type": "CLIP",
           "links": [
-            55,
-            58
+            60,
+            63
           ]
         }
       ],
@@ -4261,7 +4476,7 @@
       }
     },
     {
-      "id": 36,
+      "id": 41,
       "type": "ImageScaleBy",
       "pos": [
         3000,
@@ -4272,14 +4487,14 @@
         120
       ],
       "flags": {},
-      "order": 37,
+      "order": 42,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "image",
           "name": "image",
           "type": "IMAGE",
-          "link": 53
+          "link": 58
         },
         {
           "localized_name": "upscale_method",
@@ -4306,8 +4521,8 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            54,
-            56
+            59,
+            61
           ]
         }
       ],
@@ -4324,7 +4539,7 @@
       }
     },
     {
-      "id": 37,
+      "id": 42,
       "type": "PreviewImage",
       "pos": [
         2600,
@@ -4335,14 +4550,14 @@
         300
       ],
       "flags": {},
-      "order": 38,
+      "order": 43,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "images",
           "name": "images",
           "type": "IMAGE",
-          "link": 54
+          "link": 59
         }
       ],
       "outputs": [
@@ -4359,7 +4574,7 @@
       }
     },
     {
-      "id": 38,
+      "id": 43,
       "type": "TextGenerate",
       "pos": [
         3400,
@@ -4370,7 +4585,7 @@
         562.65625
       ],
       "flags": {},
-      "order": 39,
+      "order": 44,
       "mode": 0,
       "showAdvanced": true,
       "inputs": [
@@ -4378,14 +4593,14 @@
           "localized_name": "clip",
           "name": "clip",
           "type": "CLIP",
-          "link": 55
+          "link": 60
         },
         {
           "localized_name": "image",
           "name": "image",
           "shape": 7,
           "type": "IMAGE",
-          "link": 56
+          "link": 61
         },
         {
           "localized_name": "video",
@@ -4536,7 +4751,7 @@
           "name": "generated_text",
           "type": "STRING",
           "links": [
-            57
+            62
           ]
         },
         {
@@ -4584,7 +4799,7 @@
       }
     },
     {
-      "id": 39,
+      "id": 44,
       "type": "PreviewAny",
       "pos": [
         3850,
@@ -4595,14 +4810,14 @@
         520
       ],
       "flags": {},
-      "order": 40,
+      "order": 45,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "source",
           "name": "source",
           "type": "*",
-          "link": 57
+          "link": 62
         }
       ],
       "outputs": [
@@ -4621,7 +4836,7 @@
       "widgets_values_named": {}
     },
     {
-      "id": 40,
+      "id": 45,
       "type": "TextGenerate",
       "pos": [
         3400,
@@ -4632,7 +4847,7 @@
         562.65625
       ],
       "flags": {},
-      "order": 6,
+      "order": 4,
       "mode": 0,
       "showAdvanced": true,
       "inputs": [
@@ -4640,7 +4855,7 @@
           "localized_name": "clip",
           "name": "clip",
           "type": "CLIP",
-          "link": 58
+          "link": 63
         },
         {
           "localized_name": "image",
@@ -4798,7 +5013,7 @@
           "name": "generated_text",
           "type": "STRING",
           "links": [
-            59
+            64
           ]
         },
         {
@@ -4846,7 +5061,7 @@
       }
     },
     {
-      "id": 41,
+      "id": 46,
       "type": "PreviewAny",
       "pos": [
         3850,
@@ -4857,14 +5072,14 @@
         300
       ],
       "flags": {},
-      "order": 11,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
           "localized_name": "source",
           "name": "source",
           "type": "*",
-          "link": 59
+          "link": 64
         }
       ],
       "outputs": [
@@ -4893,10 +5108,10 @@
       "IMAGE"
     ],
     [
+      2,
       3,
-      6,
       0,
-      7,
+      4,
       0,
       "IMAGE"
     ],
@@ -4906,7 +5121,7 @@
       0,
       8,
       0,
-      "VIDEO"
+      "IMAGE"
     ],
     [
       5,
@@ -4922,93 +5137,93 @@
       0,
       10,
       0,
-      "IMAGE"
+      "VIDEO"
     ],
     [
+      7,
       10,
-      9,
       0,
       11,
       0,
       "IMAGE"
     ],
     [
-      12,
-      9,
+      8,
+      11,
       0,
       12,
       0,
       "IMAGE"
     ],
     [
-      16,
+      12,
+      11,
+      0,
       13,
       0,
+      "IMAGE"
+    ],
+    [
+      14,
+      11,
+      0,
       14,
       0,
       "IMAGE"
     ],
     [
-      17,
-      14,
-      0,
+      18,
       15,
+      0,
+      16,
+      0,
+      "IMAGE"
+    ],
+    [
+      19,
+      16,
+      0,
+      17,
+      0,
+      "IMAGE"
+    ],
+    [
+      20,
+      17,
+      0,
+      18,
       0,
       "VIDEO"
     ],
     [
-      18,
-      15,
-      0,
-      16,
-      0,
-      "IMAGE"
-    ],
-    [
-      19,
-      16,
-      0,
-      17,
-      0,
-      "IMAGE"
-    ],
-    [
-      23,
-      16,
-      0,
+      21,
       18,
       0,
+      19,
+      0,
       "IMAGE"
     ],
     [
-      25,
-      16,
-      0,
+      22,
       19,
+      0,
+      20,
+      0,
+      "IMAGE"
+    ],
+    [
+      26,
+      19,
+      0,
+      21,
       0,
       "IMAGE"
     ],
     [
       28,
-      20,
-      0,
-      21,
-      0,
-      "IMAGE"
-    ],
-    [
-      29,
-      21,
+      19,
       0,
       22,
-      0,
-      "VIDEO"
-    ],
-    [
-      30,
-      22,
-      0,
-      23,
       0,
       "IMAGE"
     ],
@@ -5021,23 +5236,31 @@
       "IMAGE"
     ],
     [
-      35,
-      23,
+      32,
+      24,
       0,
       25,
       0,
       "IMAGE"
     ],
     [
-      37,
-      23,
+      33,
+      25,
       0,
       26,
+      0,
+      "VIDEO"
+    ],
+    [
+      34,
+      26,
+      0,
+      27,
       0,
       "IMAGE"
     ],
     [
-      41,
+      35,
       27,
       0,
       28,
@@ -5045,147 +5268,67 @@
       "IMAGE"
     ],
     [
-      42,
-      28,
+      39,
+      27,
       0,
       29,
       0,
-      "VIDEO"
+      "IMAGE"
     ],
     [
-      43,
-      29,
+      41,
+      27,
       0,
       30,
       0,
       "IMAGE"
     ],
     [
-      44,
-      30,
-      0,
+      45,
       31,
-      0,
-      "IMAGE"
-    ],
-    [
-      48,
-      30,
       0,
       32,
       0,
       "IMAGE"
     ],
     [
-      50,
-      30,
+      46,
+      32,
       0,
       33,
       0,
       "IMAGE"
     ],
     [
-      52,
-      4,
+      47,
+      33,
       0,
       34,
       0,
       "VIDEO"
     ],
     [
-      53,
-      5,
+      48,
+      34,
       0,
-      36,
+      35,
       0,
-      "IMAGE"
-    ],
-    [
-      54,
-      36,
-      0,
-      37,
-      0,
-      "IMAGE"
-    ],
-    [
-      57,
-      38,
-      0,
-      39,
-      0,
-      "STRING"
-    ],
-    [
-      59,
-      40,
-      0,
-      41,
-      0,
-      "STRING"
-    ],
-    [
-      11,
-      11,
-      0,
-      5,
-      0,
-      "IMAGE"
-    ],
-    [
-      13,
-      12,
-      0,
-      5,
-      1,
-      "IMAGE"
-    ],
-    [
-      24,
-      18,
-      0,
-      5,
-      2,
-      "IMAGE"
-    ],
-    [
-      26,
-      19,
-      0,
-      5,
-      3,
-      "IMAGE"
-    ],
-    [
-      36,
-      25,
-      0,
-      5,
-      4,
-      "IMAGE"
-    ],
-    [
-      38,
-      26,
-      0,
-      5,
-      5,
       "IMAGE"
     ],
     [
       49,
-      32,
+      35,
       0,
-      5,
-      6,
+      36,
+      0,
       "IMAGE"
     ],
     [
-      51,
-      33,
+      53,
+      35,
       0,
-      5,
-      7,
+      37,
+      0,
       "IMAGE"
     ],
     [
@@ -5194,165 +5337,277 @@
       0,
       38,
       0,
-      "CLIP"
+      "IMAGE"
     ],
     [
-      56,
-      36,
+      57,
+      5,
       0,
-      38,
+      39,
+      0,
+      "VIDEO"
+    ],
+    [
+      58,
+      6,
+      0,
+      41,
+      0,
+      "IMAGE"
+    ],
+    [
+      59,
+      41,
+      0,
+      42,
+      0,
+      "IMAGE"
+    ],
+    [
+      62,
+      43,
+      0,
+      44,
+      0,
+      "STRING"
+    ],
+    [
+      64,
+      45,
+      0,
+      46,
+      0,
+      "STRING"
+    ],
+    [
+      13,
+      13,
+      0,
+      6,
+      0,
+      "IMAGE"
+    ],
+    [
+      15,
+      14,
+      0,
+      6,
       1,
       "IMAGE"
     ],
     [
-      58,
-      35,
+      27,
+      21,
       0,
+      6,
+      2,
+      "IMAGE"
+    ],
+    [
+      29,
+      22,
+      0,
+      6,
+      3,
+      "IMAGE"
+    ],
+    [
       40,
+      29,
+      0,
+      6,
+      4,
+      "IMAGE"
+    ],
+    [
+      42,
+      30,
+      0,
+      6,
+      5,
+      "IMAGE"
+    ],
+    [
+      54,
+      37,
+      0,
+      6,
+      6,
+      "IMAGE"
+    ],
+    [
+      56,
+      38,
+      0,
+      6,
+      7,
+      "IMAGE"
+    ],
+    [
+      60,
+      40,
+      0,
+      43,
       0,
       "CLIP"
     ],
     [
-      9,
-      10,
+      61,
+      41,
       0,
-      4,
+      43,
+      1,
+      "IMAGE"
+    ],
+    [
+      63,
+      40,
+      0,
+      45,
+      0,
+      "CLIP"
+    ],
+    [
+      11,
+      12,
+      0,
+      5,
       0,
       "VIDEO"
     ],
     [
-      22,
-      17,
+      25,
+      20,
       0,
-      4,
+      5,
       1,
       "VIDEO"
     ],
     [
-      34,
-      24,
+      38,
+      28,
       0,
-      4,
+      5,
       2,
       "VIDEO"
     ],
     [
-      47,
-      31,
+      52,
+      36,
       0,
-      4,
+      5,
       3,
       "VIDEO"
     ],
     [
-      2,
-      2,
+      3,
+      3,
       0,
-      6,
-      20,
-      "IMAGE"
-    ],
-    [
       7,
-      8,
-      2,
+      20,
+      "IMAGE"
+    ],
+    [
+      9,
       10,
       2,
+      12,
+      2,
       "FLOAT"
     ],
     [
-      8,
-      8,
-      1,
+      10,
       10,
       1,
+      12,
+      1,
       "AUDIO"
     ],
     [
-      14,
-      6,
+      16,
+      8,
       0,
-      13,
+      15,
       20,
       "IMAGE"
     ],
     [
-      15,
-      2,
-      0,
-      13,
-      21,
-      "IMAGE"
-    ],
-    [
-      20,
-      15,
-      2,
       17,
-      2,
-      "FLOAT"
-    ],
-    [
-      21,
+      3,
+      0,
       15,
-      1,
-      17,
-      1,
-      "AUDIO"
-    ],
-    [
-      27,
-      2,
-      0,
-      20,
-      20,
-      "IMAGE"
-    ],
-    [
-      32,
-      22,
-      2,
-      24,
-      2,
-      "FLOAT"
-    ],
-    [
-      33,
-      22,
-      1,
-      24,
-      1,
-      "AUDIO"
-    ],
-    [
-      39,
-      6,
-      0,
-      27,
-      20,
-      "IMAGE"
-    ],
-    [
-      40,
-      2,
-      0,
-      27,
       21,
       "IMAGE"
     ],
     [
-      45,
-      29,
+      23,
+      18,
       2,
-      31,
+      20,
       2,
       "FLOAT"
     ],
     [
-      46,
-      29,
+      24,
+      18,
       1,
+      20,
+      1,
+      "AUDIO"
+    ],
+    [
+      30,
+      3,
+      0,
+      23,
+      20,
+      "IMAGE"
+    ],
+    [
+      36,
+      26,
+      2,
+      28,
+      2,
+      "FLOAT"
+    ],
+    [
+      37,
+      26,
+      1,
+      28,
+      1,
+      "AUDIO"
+    ],
+    [
+      43,
+      8,
+      0,
       31,
+      20,
+      "IMAGE"
+    ],
+    [
+      44,
+      3,
+      0,
+      31,
+      21,
+      "IMAGE"
+    ],
+    [
+      50,
+      34,
+      2,
+      36,
+      2,
+      "FLOAT"
+    ],
+    [
+      51,
+      34,
+      1,
+      36,
       1,
       "AUDIO"
     ]

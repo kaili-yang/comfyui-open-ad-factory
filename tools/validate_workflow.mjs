@@ -73,6 +73,13 @@ if (coreOnly) {
   for (let i = 1; i <= 4; i++) if (!Array.isArray(asm?.inputs[`video_${i}`])) fail(`assemble video_${i} not wired`)
 }
 
+// Qwen-Image 2.1 decodes RGBA; every LTX first frame must come through SplitImageWithAlpha
+const rgbIds = new Set(byType('SplitImageWithAlpha').map(([id]) => id))
+const ltxFirstFrames = byType('LTXVPreprocess').length
+const fedRgb = byType('ResizeImageMaskNode').filter(([id, n]) => id.includes(':') && Array.isArray(n.inputs.input) && rgbIds.has(n.inputs.input[0])).length
+console.log('LTX stages:', ltxFirstFrames, 'first frames via SplitImageWithAlpha:', fedRgb)
+if (fedRgb !== ltxFirstFrames) fail(`only ${fedRgb}/${ltxFirstFrames} LTX first frames are RGB`)
+
 // The LTX stage inside each subgraph must get the shot's video prompt and our size and duration
 const enc = byType('CLIPTextEncode').filter(([, n]) => Array.isArray(n.inputs.text))
 console.log('api nodes:', Object.keys(result.output).length, 'CLIPTextEncode linked:', enc.length)

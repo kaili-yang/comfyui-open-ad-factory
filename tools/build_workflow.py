@@ -171,10 +171,14 @@ def build(object_info, url=None, image=None, notes="", project="my_ad", style="u
         b.link(shot, 0, kf, "prompt")
         b.link(page, 2, kf, "images.image_1")
 
+        # Qwen-Image 2.1 decodes RGBA; LTX takes RGB only
+        kf_rgb = b.pack_node("SplitImageWithAlpha", (1100, y + 440), {}, size=(260, 80), title=f"Shot {i + 1} keyframe RGB")
+        b.link(kf, 0, kf_rgb, "image")
+
         vid = b.copy_node(ltx_node, (1650, y), title=f"Shot {i + 1} video (LTX-2.3)")
         vid["widgets_values"][1:5] = [True, WIDTH, HEIGHT, SECONDS]  # prompt_enhance, width, height, duration
         vid["widgets_values"][6] = 2000 + i  # seed
-        b.link(kf, 0, vid, "input")
+        b.link(kf_rgb, 0, vid, "input")
         b.link(shot, 1, vid, "value")
         b.link(vid, 0, assemble, f"video_{i + 1}")
 
